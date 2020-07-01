@@ -2,6 +2,8 @@ package it.crescenziandrea.codicefiscale;
 
 //TODO: importare database
 
+import it.crescenziandrea.codicefiscale.database.FiscalCode;
+
 public class CFgenerator {
     private String name;
     private String surname;
