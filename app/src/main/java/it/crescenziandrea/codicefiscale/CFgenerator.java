@@ -1,8 +1,6 @@
 package it.crescenziandrea.codicefiscale;
 
-//TODO: importare database
-
-import it.crescenziandrea.codicefiscale.database.FiscalCode;
+import java.util.ArrayList;
 
 public class CFgenerator {
     private String name;
@@ -21,7 +19,6 @@ public class CFgenerator {
         this.year = year;
         this.sex = sex;
         this.birthplace = birthplace;
-
     }
 
     //creating methods get/set for all the variables
@@ -68,8 +65,6 @@ public class CFgenerator {
     }
 
 
-    /*public  String calculate() {
-        //TODO: metodo che avviera gli script per estrapolare consonanti e calcolare i codici
     public  String Calculate() {
         String SurnameCode = this.ConsonantCalculator(this.surname);
         String NameCode = this.ConsonantCalculator(this.name);
@@ -79,25 +74,46 @@ public class CFgenerator {
 
         return result;
     }
-    */
-    //TODO: definire metodo per il calcolo delle consonanti del nome/cognome
+
     //TODO: definire metodi per calcolare codici relativi alle regioni
-    //TODO: metodo per calcolare codice mese e anno
-    //TODO: metodo per giorno e sesso
     //TODO: metodo codice comune e carattere di controllo
 
     private String ConsonantCalculator(String string) {
         int i;
+        String consonant = new String();
         String result = new String();
         for(i=0; i<=string.length()-1; i++) {
             char character = string.charAt(i);
             if (character != 'a' && character != 'e' && character != 'i' && character != 'o' && character != 'u' &&
-                character != 'A' && character != 'E' && character != 'I' && character != 'O' && character != 'U') {
-                result += Character.toString(character);
+                    character != 'A' && character != 'E' && character != 'I' && character != 'O' && character != 'U') {
+                consonant += Character.toString(character);
             }
-           if(result.length() <= 3) continue;
-           else break;
         }
+
+            if(consonant.length() > 3) {
+                for(i=0; i < consonant.length();i++){
+                    char cons = consonant.charAt(i);
+                    if(i != 1) {
+                        result += Character.toString(cons);
+                    }
+                    if(result.length() <= 3) continue;
+                    else break;
+                }
+            }
+            else result = consonant;
+
+            if(consonant.length() < 3) {
+                for (i = 0; i <= string.length() - 1; i++) {
+                    char character = string.charAt(i);
+                    if (character == 'a' || character == 'e' || character == 'i' || character == 'o' || character == 'u' &&
+                            character == 'A' || character == 'E' || character == 'I' || character == 'O' || character == 'U') {
+                        consonant += Character.toString(character);
+                        if(consonant.length() == 3) break;
+                    }
+                }
+                if(consonant.length() < 3) consonant += "x";
+                result = consonant;
+            }
         return result;
     }
 

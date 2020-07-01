@@ -28,6 +28,7 @@ import it.crescenziandrea.codicefiscale.database.appFiscalCodeDatabase;
 public class MainActivity extends AppCompatActivity {
 
     private appFiscalCodeDatabase db;
+    Holder holder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +55,9 @@ public class MainActivity extends AppCompatActivity {
         db.roomDAO().addData(fCode8);
 
 
-        new Holder();
+        holder = new Holder();
 
+        holder.provaTXT.setText(holder.prova.Calculate());
 
 
     }
@@ -78,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
         final FloatingActionMenu materialDesignFAM;
         final FloatingActionButton floatingActionButton1;
         final FloatingActionButton floatingActionButton2;
-        //final FloatingActionButton fab;
+        final TextView provaTXT;
+        final CFgenerator prova;
 
         Holder() {
 
@@ -86,7 +89,10 @@ public class MainActivity extends AppCompatActivity {
             materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
             floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
             floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
+            provaTXT = findViewById(R.id.tv_nome);
 
+            prova = new CFgenerator("of", "maoio", 25,
+                    1, 1998, "F", "rm");
 
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2, GridLayoutManager.VERTICAL, false);
             rvCocktails.setLayoutManager(layoutManager);
