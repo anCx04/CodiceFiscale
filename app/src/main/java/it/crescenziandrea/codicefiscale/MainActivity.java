@@ -14,8 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.List;
@@ -69,15 +71,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    class Holder implements FloatingActionButton.OnClickListener{
+    class Holder {
 
         final RecyclerView rvCocktails;
-        final FloatingActionButton fab;
+        final FloatingActionMenu materialDesignFAM;
+        final FloatingActionButton floatingActionButton1;
+        final FloatingActionButton floatingActionButton2;
+        //final FloatingActionButton fab;
 
         Holder() {
 
             rvCocktails = findViewById(R.id.recycler_view);
-            fab = findViewById(R.id.floating_action_button);
+            materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
+            floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
+            floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
 
 
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2, GridLayoutManager.VERTICAL, false);
@@ -90,13 +97,21 @@ public class MainActivity extends AppCompatActivity {
             rvCocktails.addItemDecoration(new ProductGridItemDecoration(largePadding, smallPadding));
 
 
-            fab.setOnClickListener(this);
+            floatingActionButton1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "button1", Toast.LENGTH_SHORT).show();
+                }
+            });
+            floatingActionButton2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "button2", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
-        @Override
-        public void onClick(View v) {
 
-        }
     }
 
     private class fCodeAdapter extends RecyclerView.Adapter<fCodeAdapter.Holder> {
