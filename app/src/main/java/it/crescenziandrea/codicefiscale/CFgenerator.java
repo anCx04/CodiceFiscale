@@ -21,7 +21,7 @@ public class CFgenerator {
         this.month = month;
         this.sex = sex;
         this.birthplace = birthplace;
-        this.crescenziandrea;
+        //this.crescenziandrea;
     }
 
     //creating methods get/set for all the variables
@@ -68,9 +68,10 @@ public class CFgenerator {
     }
 
 
-    public  String calculate() {
+    /*public  String calculate() {
         //TODO: metodo che avviera gli script per estrapolare consonanti e calcolare i codici
     }
+    */
     //TODO: definire metodo per il calcolo delle consonanti del nome/cognome
     //TODO: definire metodi per calcolare codici relativi alle regioni
     //TODO: metodo per calcolare codice mese e anno

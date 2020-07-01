@@ -11,17 +11,19 @@ public class FiscalCode {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "fCode")
-    private String fCode;
+    public String fCode;
 
-    public FiscalCode(@NonNull String str) {
-        this.fCode = str;
+    public FiscalCode(@NonNull String fCode) {
+        this.fCode = fCode;
     }
+
 
     @NonNull
     public String getfCode() {
-        return this.fCode;
+        return fCode;
     }
 
-    public void setfcode(String str){ this.fCode = str; }
-
+    public void setfCode(@NonNull String fCode) {
+        this.fCode = fCode;
+    }
 }
