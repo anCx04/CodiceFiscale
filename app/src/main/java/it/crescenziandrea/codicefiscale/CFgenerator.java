@@ -10,16 +10,15 @@ public class CFgenerator {
     private int year;
     private String sex;
     private String birthplace;
-    private FiscalCode crescenziandrea;
 
-    public CFgenerator(String name, String surname, int day, int month, int year, String sex, String birthplace, FiscalCode crescenziandrea) {
+    public CFgenerator(String surname, String name, int day, int month, int year, String sex, String birthplace) {
         this.name = name;
         this.surname = surname;
         this.day = day;
         this.month = month;
+        this.year = year;
         this.sex = sex;
         this.birthplace = birthplace;
-        this.crescenziandrea;
     }
 
     //creating methods get/set for all the variables
@@ -66,8 +65,14 @@ public class CFgenerator {
     }
 
 
-    public  String calculate() {
-        //TODO: metodo che avviera gli script per estrapolare consonanti e calcolare i codici
+    public  String Calculate() {
+        String SurnameCode = this.ConsonantCalculator(this.surname);
+        String NameCode = this.ConsonantCalculator(this.name);
+        String BirthSex = this.BirthSexYearCalculator(this.year, this.month, this.day,this.sex);
+
+        String result = SurnameCode + NameCode + BirthSex;
+
+        return result;
     }
     //TODO: definire metodo per il calcolo delle consonanti del nome/cognome
     //TODO: definire metodi per calcolare codici relativi alle regioni
@@ -75,7 +80,96 @@ public class CFgenerator {
     //TODO: metodo per giorno e sesso
     //TODO: metodo codice comune e carattere di controllo
 
+    private String ConsonantCalculator(String string) {
+        int i;
+        String result = new String();
+        for(i=0; i<=string.length()-1; i++) {
+            char character = string.charAt(i);
+            if (character != 'a' && character != 'e' && character != 'i' && character != 'o' && character != 'u' &&
+                character != 'A' && character != 'E' && character != 'I' && character != 'O' && character != 'U') {
+                result += Character.toString(character);
+            }
+           if(result.length() <= 3) continue;
+           else break;
+        }
+        return result;
+    }
 
-    //TODO metodo che prende prime 3 consonanti cognome
+    private String BirthSexYearCalculator(int year, int month, int day, String sex){
+        String BirthSexYearCode;
+        String YearCode;
+        String MonthCode;
+        String DaySexCode;
+
+        YearCode = YearCalculator(year);
+        MonthCode = MonthCalculator(month);
+        DaySexCode = DaySexCalculator(day, sex);
+
+        BirthSexYearCode = YearCode + MonthCode + DaySexCode;
+
+        return BirthSexYearCode;
+    }
+
+    private String YearCalculator(int year) {
+        return Integer.toString(year).substring(2);
+    }
+
+    private String MonthCalculator(int month) {
+        String result;
+        switch (month) {
+            case 1:
+                result = "A";
+                break;
+            case 2:
+                result = "B";
+                break;
+            case 3:
+                result = "C";
+                break;
+            case 4:
+                result = "D";
+                break;
+            case 5:
+                result = "E";
+                break;
+            case 6:
+                result = "H";
+                break;
+            case 7:
+                result = "L";
+                break;
+            case 8:
+                result = "M";
+                break;
+            case 9:
+                result = "P";
+                break;
+            case 10:
+                result = "R";
+                break;
+            case 11:
+                result = "S";
+                break;
+            case 12:
+                result = "T";
+                break;
+            default:
+                result = " ";
+                break;
+        }
+        return result;
+    }
+
+    private String DaySexCalculator(int day, String sex) {
+        String dayCode = String.format("%02d", day);
+
+        if(sex.equals("F")) {
+            int fullDayCode;
+            fullDayCode = Integer.parseInt(dayCode);
+            fullDayCode += 40;
+            dayCode = Integer.toString(fullDayCode);
+        }
+        return dayCode;
+    }
 }
 
