@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         db.roomDAO().addData(fCode7);
         db.roomDAO().addData(fCode8);
 
+
         new Holder();
 
 
