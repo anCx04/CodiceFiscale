@@ -14,26 +14,29 @@ import java.lang.reflect.Array;
 import java.util.ResourceBundle;
 
 public class ManualGeneration extends AppCompatActivity {
+    Holder holder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_generation);
+
+        holder = new Holder();
+
     }
 
     class Holder{
 
         AutoCompleteTextView tvRegion;
-        AutoCompleteTextView tvProvince;
-        AutoCompleteTextView tvDistrict;
+        String[] region = new String[]{"Lazio", "Basilicata", "Molise", "Campania", "Calabria"};
+        //AutoCompleteTextView tvProvince;
+        //AutoCompleteTextView tvDistrict;
 
         public Holder() {
-            super();
-            tvRegion = tvRegion.findViewById(R.id.tvRegion);
+            tvRegion = findViewById(R.id.tvRegion);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, region);
             //tvProvince = tvProvince.findViewById(R.id.tvProvince);
-            tvDistrict = tvDistrict.findViewById(R.id.tvDistrict);
-            String[] region = new String[]{"Lazio", "Basilicata", "Molise", "Campania", "Calabria"};
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.simple_list_item_1, region);
+            //tvDistrict = tvDistrict.findViewById(R.id.tvDistrict);
             tvRegion.setAdapter(adapter);
         }
 

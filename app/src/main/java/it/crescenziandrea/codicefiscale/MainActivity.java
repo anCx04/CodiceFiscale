@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             provaTXT = findViewById(R.id.tv_nome);
 
             prova = new CFgenerator("of", "maoio", 25,
-                    1, 1998, "F", "rm");
+                    6, 1998, "M", "rm");
 
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2, GridLayoutManager.VERTICAL, false);
             rvCocktails.setLayoutManager(layoutManager);
