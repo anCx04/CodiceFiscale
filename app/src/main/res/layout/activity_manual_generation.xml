@@ -16,21 +16,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <AutoCompleteTextView-->
-<!--        android:id="@+id/tvProvince"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Select a province"-->
-<!--        android:completionThreshold="1"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tvRegion" />-->
+   <!-- <AutoCompleteTextView
+        android:id="@+id/tvProvince"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Select a province"
+        android:completionThreshold="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRegion" />
 
-<!--    <AutoCompleteTextView-->
-<!--        android:id="@+id/tvDistrict"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Select a district"-->
-<!--        android:completionThreshold="1"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tvProvince" />-->
+    <AutoCompleteTextView
+        android:id="@+id/tvDistrict"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Select a district"
+        android:completionThreshold="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProvince" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>
