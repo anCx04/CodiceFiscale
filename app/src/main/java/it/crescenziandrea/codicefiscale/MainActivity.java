@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -108,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getApplicationContext(), "button1", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this, ManualGeneration.class);
+                    MainActivity.this.startActivity(intent);
                 }
             });
             floatingActionButton2.setOnClickListener(new View.OnClickListener() {
