@@ -92,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
             floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
             provaTXT = findViewById(R.id.tv_nome);
 
-            prova = new CFgenerator("of", "maoio", 25,
-                    6, 1998, "M", "rm");
+            prova = new CFgenerator("BASIRICO", "JOSEF", 25,
+                    2, 1998, "M", "rm");
 
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2, GridLayoutManager.VERTICAL, false);
             rvCocktails.setLayoutManager(layoutManager);
