@@ -2,6 +2,7 @@ package it.crescenziandrea.codicefiscale;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -47,7 +48,7 @@ public class ManualGeneration extends AppCompatActivity {
         AutoCompleteTextView tvDistrict;
         final VolleyCocktail model;
 
-        String[] region = new String[]{"Lazio", "Basilicata", "Molise", "Campania", "Calabria"};
+        //String[] region = new String[]{"Lazio", "Basilicata", "Molise", "Campania", "Calabria"};
         String[] province = new String[]{"Roma", "Latina"};
         String[] district = new String[]{"Colleferro", "Artena", "Velletri", "Valmontone"};
 
@@ -61,11 +62,11 @@ public class ManualGeneration extends AppCompatActivity {
                     model.searchRegion();
                 }
             });
-            ArrayAdapter<String> adapterRegion = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, region);
+            //ArrayAdapter<String> adapterRegion = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, region);
             ArrayAdapter<String> adapterProvince = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, province);
             ArrayAdapter<String> adapterDistrict = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, district);
 
-            tvRegion.setAdapter(adapterRegion);
+            //tvRegion.setAdapter(adapterRegion);
             tvProvince.setAdapter(adapterProvince);
             tvDistrict.setAdapter(adapterDistrict);
 
@@ -73,15 +74,17 @@ public class ManualGeneration extends AppCompatActivity {
                 @Override
                 void fill(String[] cnt) {
                     Log.w("CA", "fill");
-                    //fillList(cnt); //il metodo fill chiama una funzione chiamata fillList
+                    fillList(cnt); //il metodo fill chiama una funzione chiamata fillList
                 }
 
-                //private void fillList(List<Cocktail> cnt) { //fa il filling della RecyclerView
-                  //  RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(CocktailActivity.this);
+                private void fillList(String[] cnt) { //fa il filling della RecyclerView
+                    //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(CocktailActivity.this);
+                    ArrayAdapter<String> adapterRegion = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, cnt);
+                    tvRegion.setAdapter(adapterRegion);
                     //rvCocktails.setLayoutManager(layoutManager);
                     //CocktailAdapter mAdapter = new CocktailAdapter(cnt); //l'adapter sarà di tipo CocktailAdapter a cui passiamo la lista cnt
                     //rvCocktails.setAdapter(mAdapter); //i cocktail vengono messi in lista
-                //}
+                }
             };
         }
     }
