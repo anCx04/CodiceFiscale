@@ -35,14 +35,12 @@ public class ManualGeneration extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_generation);
-
         holder = new Holder();
 
     }
 
 
     class Holder{
-
         AutoCompleteTextView tvRegion;
         AutoCompleteTextView tvProvince;
         AutoCompleteTextView tvDistrict;
@@ -56,12 +54,12 @@ public class ManualGeneration extends AppCompatActivity {
             tvRegion = findViewById(R.id.tvRegion);
             tvProvince = findViewById(R.id.tvProvince);
             tvDistrict = findViewById(R.id.tvDistrict);
-            tvRegion.setOnClickListener(new View.OnClickListener() {
+            /*tvRegion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     model.searchRegion();
                 }
-            });
+            });*/
             //ArrayAdapter<String> adapterRegion = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, region);
             ArrayAdapter<String> adapterProvince = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, province);
             ArrayAdapter<String> adapterDistrict = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, district);
@@ -72,25 +70,29 @@ public class ManualGeneration extends AppCompatActivity {
 
             this.model = new VolleyCocktail() { //inizializziamo il modello di acquisizione dati che è un new VolleyCocktail
                 @Override
-                void fill(String[] cnt) {
+                void fill(List cnt) {
                     Log.w("CA", "fill");
-                    fillList(cnt); //il metodo fill chiama una funzione chiamata fillList
+                    //fillList(cnt); //il metodo fill chiama una funzione chiamata fillList
                 }
 
-                private void fillList(String[] cnt) { //fa il filling della RecyclerView
+              /*  private void fillList(List cnt) { //fa il filling della RecyclerView
+                    String[] region = new String[0];
+                    for(int i=0; i<cnt.size(); i++){
+                        region += cnt.get(i);
+                    }
                     //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(CocktailActivity.this);
-                    ArrayAdapter<String> adapterRegion = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, cnt);
+                    ArrayAdapter<String> adapterRegion = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, region);
                     tvRegion.setAdapter(adapterRegion);
                     //rvCocktails.setLayoutManager(layoutManager);
                     //CocktailAdapter mAdapter = new CocktailAdapter(cnt); //l'adapter sarà di tipo CocktailAdapter a cui passiamo la lista cnt
                     //rvCocktails.setAdapter(mAdapter); //i cocktail vengono messi in lista
-                }
+                }*/
             };
         }
     }
 
     abstract class VolleyCocktail implements Response.ErrorListener, Response.Listener<String> { //attraverso Volley prende i dati del sito cocktaildb, è la classe che fa da interfaccia tra cocktaildb e la nostra app
-        abstract void fill(String[] cnt); //la UI sarà gestita dalla classe chiamante andando a implementare il metodo fill
+        abstract void fill(List cnt); //la UI sarà gestita dalla classe chiamante andando a implementare il metodo fill
         private static final String APIKEY = "1";
         public void searchRegion() {
             String url = "https://comuni-ita.herokuapp.com/api/regioni";
