@@ -14,12 +14,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.zxing.WriterException;
 
 import java.util.List;
 
@@ -59,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
         holder = new Holder();
 
         holder.provaTXT.setText(holder.prova.Calculate());
+        try {
+            holder.provaVIEW.setImageBitmap(holder.prova2.generateBarCode());
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -83,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
         final FloatingActionButton floatingActionButton2;
         final TextView provaTXT;
         final CFgenerator prova;
+        final BarCodeGenerator prova2;
+
+        final ImageView provaVIEW;
 
         Holder() {
 
@@ -91,9 +101,12 @@ public class MainActivity extends AppCompatActivity {
             floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
             floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
             provaTXT = findViewById(R.id.tv_nome);
+            provaVIEW = findViewById(R.id.iv_drink);
 
             prova = new CFgenerator("BASIRICO", "JOSEF", 25,
                     2, 1998, "M", "rm");
+
+            prova2 = new BarCodeGenerator(prova.Calculate());
 
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2, GridLayoutManager.VERTICAL, false);
             rvCocktails.setLayoutManager(layoutManager);
