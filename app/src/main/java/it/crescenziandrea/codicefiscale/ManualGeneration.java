@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -45,69 +47,156 @@ public class ManualGeneration extends AppCompatActivity {
         AutoCompleteTextView tvProvince;
         AutoCompleteTextView tvDistrict;
         final VolleyCocktail model;
+        private int search = 0;
 
-        //String[] region = new String[]{"Lazio", "Basilicata", "Molise", "Campania", "Calabria"};
-        String[] province = new String[]{"Roma", "Latina"};
-        String[] district = new String[]{"Colleferro", "Artena", "Velletri", "Valmontone"};
 
+
+        String[] region = new String[]{"veneto",
+                "lombardia",
+                "toscana",
+                "sardegna",
+                "abruzzo",
+                "basilicata",
+                "sicilia",
+                "puglia",
+                "piemonte",
+                "lazio",
+                "campania",
+                "calabria",
+                "marche",
+                "umbria",
+                "molise",
+                "emilia romagna",
+                "friuli venezia giulia",
+                "liguria",
+                "trentino alto adige",
+                "valle d'aosta"};
+
+
+        @SuppressLint("ClickableViewAccessibility")
         public Holder() {
             tvRegion = findViewById(R.id.tvRegion);
             tvProvince = findViewById(R.id.tvProvince);
             tvDistrict = findViewById(R.id.tvDistrict);
-            /*tvRegion.setOnClickListener(new View.OnClickListener() {
+            /*
+            tvRegion.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
                     model.searchRegion();
                 }
-            });*/
-            //ArrayAdapter<String> adapterRegion = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, region);
-            ArrayAdapter<String> adapterProvince = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, province);
-            ArrayAdapter<String> adapterDistrict = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, district);
-
-            //tvRegion.setAdapter(adapterRegion);
-            tvProvince.setAdapter(adapterProvince);
-            tvDistrict.setAdapter(adapterDistrict);
-
-            this.model = new VolleyCocktail() { //inizializziamo il modello di acquisizione dati che è un new VolleyCocktail
+            });
+            */
+            /*
+            tvProvince.setOnClickListener(new View.OnClickListener() {
                 @Override
-                void fill(List cnt) {
-                    Log.w("CA", "fill");
-                    //fillList(cnt); //il metodo fill chiama una funzione chiamata fillList
+                public void onClick(View v) {
+                    model.searchProvince(tvRegion.getText().toString());
+                    Toast.makeText(getApplicationContext(), "Provincie", Toast.LENGTH_LONG).show();
+                    search = 2;
                 }
+            });
 
-              /*  private void fillList(List cnt) { //fa il filling della RecyclerView
-                    String[] region = new String[0];
-                    for(int i=0; i<cnt.size(); i++){
-                        region += cnt.get(i);
-                    }
-                    //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(CocktailActivity.this);
-                    ArrayAdapter<String> adapterRegion = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, region);
-                    tvRegion.setAdapter(adapterRegion);
-                    //rvCocktails.setLayoutManager(layoutManager);
-                    //CocktailAdapter mAdapter = new CocktailAdapter(cnt); //l'adapter sarà di tipo CocktailAdapter a cui passiamo la lista cnt
-                    //rvCocktails.setAdapter(mAdapter); //i cocktail vengono messi in lista
-                }*/
+
+
+             */
+            tvProvince.setOnTouchListener(new View.OnTouchListener(){
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    model.searchProvince(tvRegion.getText().toString());
+                    Toast.makeText(getApplicationContext(), "Provincie", Toast.LENGTH_LONG).show();
+                    search = 2;
+                    return false;
+                }
+            });
+
+            tvDistrict.setOnTouchListener(new View.OnTouchListener(){
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    model.searchDistrict(tvProvince.getText().toString());
+                    search = 3;
+                    Toast.makeText(getApplicationContext(), "comuni", Toast.LENGTH_LONG).show();
+
+                    return false;
+                }
+            });
+
+
+
+            ArrayAdapter<String> adapterRegion = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, region);
+            tvRegion.setAdapter(adapterRegion);
+
+
+            this.model = new VolleyCocktail() {                                                 //inizializziamo il modello di acquisizione dati che è un new VolleyCocktail
+                @Override
+                void fill(List<ProDis> cnt) {
+                    Log.w("CA", "fill");
+                    Toast.makeText(getApplicationContext(), "fill", Toast.LENGTH_LONG).show();
+                    fillList(listToArrayString(cnt)); //il metodo fill chiama una funzione chiamata fillList
+                }
             };
         }
+
+        private void fillList(String[] cnt) { //fa il filling della RecyclerView
+            ArrayAdapter<String> adapter;
+
+            switch(search){
+                case 2:
+                    adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, cnt);
+                    tvProvince.setAdapter(adapter);
+                    break;
+
+                case 3:
+                    adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, cnt);
+                    tvDistrict.setAdapter(adapter);
+                    break;
+
+                default:
+                    // TO DO
+                    break;
+            }
+
+
+        }
+
+        private String[] listToArrayString(List<ProDis> list){
+
+            String[] str = new String[list.size()] ;
+
+            for(int i=0; i<list.size(); i++){
+                str[i] = list.get(i).getProDis();
+            }
+
+            return str;
+        }
+
     }
 
     abstract class VolleyCocktail implements Response.ErrorListener, Response.Listener<String> { //attraverso Volley prende i dati del sito cocktaildb, è la classe che fa da interfaccia tra cocktaildb e la nostra app
-        abstract void fill(List cnt); //la UI sarà gestita dalla classe chiamante andando a implementare il metodo fill
-        private static final String APIKEY = "1";
+        abstract void fill(List<ProDis> cnt); //la UI sarà gestita dalla classe chiamante andando a implementare il metodo fill
+
+        private int search = 0; ;
+
         public void searchRegion() {
             String url = "https://comuni-ita.herokuapp.com/api/regioni";
+            search = 1;
             apiCall(url);
         }
 
         public void searchProvince(String id) {
             String url = "https://comuni-ita.herokuapp.com/api/province/%s"; //usiamo il metodo search per la ricerca per nome
             url = String.format(url, id);
+            //Toast.makeText(getApplicationContext(), url, Toast.LENGTH_LONG).show();
+            search = 2;
             apiCall(url);
         }
 
         public void searchDistrict(String id) {
             String url = "https://comuni-ita.herokuapp.com/api/comuni/provincia/%s"; //usiamo il metodo filter, i è l'ingrediente che andiamo a richiedere
             url = String.format(url, id);
+            search = 3;
             apiCall(url);
         }
 
@@ -128,18 +217,43 @@ public class ManualGeneration extends AppCompatActivity {
         @Override
         public void onResponse(String response) { //se tutto è andato bene avremo una string response che sarà un json di risposta
             Gson gson = new Gson(); //allochiamo un oggetto gson
-            try {
-                JSONObject jsonObject = new JSONObject(response); //utilizzando la classe JSONObject
-                String drinks = jsonObject.getJSONArray("").toString();
-                Type listType = new TypeToken<String>() {}.getType();
-                String[] cnt = gson.fromJson(drinks, listType); //Diamo la stringa in pasto al gson utilizzando come tipo di dati una lista di tipo cocktail
-                Log.w("CA", cnt[0]);
-                //if (cnt != null && cnt.size() > 0) { //se la lista dei cocktail è diversa da null, quindi se non ci sono stati errori legati all'assegnazione nella riga precedente, e se abbiamo trovato qualcosa all'interno della struttura
-                  //  Log.w("CA", "" + cnt.size());
-                    //fill(cnt);
-                } catch (JSONException e) {
-                e.printStackTrace();
+            String res;
+            switch(search) {
+                case 1:
+                    try {
+
+                        JSONArray jsonArray = new JSONArray(response);
+                        res = jsonArray.toString();
+                        String[] cnt = gson.fromJson(res, String[].class);
+                        if (cnt != null && cnt.length > 0) { //se la lista dei cocktail è diversa da null, quindi se non ci sono stati errori legati all'assegnazione nella riga precedente, e se abbiamo trovato qualcosa all'interno della struttura
+                            Log.w("CA", "" + cnt.length);
+                            //fill(cnt);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 2:
+                case 3:
+                    try {
+                        JSONArray jsonArray = new JSONArray(response);
+                        res = jsonArray.toString();
+                        Type listType = new TypeToken<List<ProDis>>() {}.getType();
+                        List<ProDis> cnt = gson.fromJson(res, listType);
+                        if (cnt != null && cnt.size() > 0) {
+                            Log.w("CA", cnt.get(0).getCodCat());
+                            fill(cnt);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                default:
+                    // TO DO error
+                    break;
             }
-        }
+
+            }
     }
 }
