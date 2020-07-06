@@ -14,11 +14,6 @@ import java.util.Map;
 public class BarCodeGenerator {
     private Bitmap bitmap = null;
     private String fiscalCodeToConvert;
-    //TODO: inserire manualmente libreria, lo faccio sul fisso (vedi: https://stackoverflow.com/questions/10353392/generate-barcode-image-in-android-application)
-    //TODO: passare immageView dove mettere bitmap
-    //bitmap = encodeAsBitmap(/*barcode_data*/, BarcodeFormat.CODE_39, 600, 300); //TODO: da vedere grandezza imagine e passare dato da convertire
-    /*iv.setImmageBitmap(bitmap);*/
-    //e.printStackTrace();
 
     public BarCodeGenerator(String fiscalCodeToConvert) {
         this.fiscalCodeToConvert = fiscalCodeToConvert;
@@ -67,7 +62,6 @@ public class BarCodeGenerator {
     }
 
     private static String guessAppropriateEncoding(CharSequence contents) {
-        // Very crude at the moment
         for (int i = 0; i < contents.length(); i++) {
             if (contents.charAt(i) > 0xFF) {
                 return "UTF-8";
