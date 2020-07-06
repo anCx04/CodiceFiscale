@@ -10,9 +10,10 @@
         android:id="@+id/tvRegion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
-        android:hint="Select a region"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="420dp"
         android:completionThreshold="1"
+        android:hint="Select a region"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,8 +21,10 @@
         android:id="@+id/tvProvince"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Select a province"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="312dp"
         android:completionThreshold="1"
+        android:hint="Select a province"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRegion" />
 
@@ -29,8 +32,10 @@
         android:id="@+id/tvDistrict"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Select a district"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="340dp"
         android:completionThreshold="1"
+        android:hint="Select a district"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvProvince" />
 </androidx.constraintlayout.widget.ConstraintLayout>

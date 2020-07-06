@@ -78,28 +78,8 @@ public class ManualGeneration extends AppCompatActivity {
             tvRegion = findViewById(R.id.tvRegion);
             tvProvince = findViewById(R.id.tvProvince);
             tvDistrict = findViewById(R.id.tvDistrict);
-            /*
-            tvRegion.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    model.searchRegion();
-                }
-            });
-            */
-            /*
-            tvProvince.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    model.searchProvince(tvRegion.getText().toString());
-                    Toast.makeText(getApplicationContext(), "Provincie", Toast.LENGTH_LONG).show();
-                    search = 2;
-                }
-            });
 
 
-
-             */
             tvProvince.setOnTouchListener(new View.OnTouchListener(){
 
                 @Override
