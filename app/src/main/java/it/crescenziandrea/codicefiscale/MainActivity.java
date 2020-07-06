@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -22,6 +23,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.zxing.WriterException;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.List;
 
@@ -130,12 +132,26 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getApplicationContext(), "button2", Toast.LENGTH_SHORT).show();
+                    IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
+                    integrator.initiateScan();
                 }
             });
+
         }
-
-
     }
+    //@Override
+    /*protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        //IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == 0) {
+            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            //String scanResult = data.getStringExtra("SCAN_RESULT");
+            Toast.makeText(getApplicationContext(), String.format("Risultato dello scan: %1$s", scanResult), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Operazione annullata!", Toast.LENGTH_SHORT).show();
+        }
+    }*/
 
     private class fCodeAdapter extends RecyclerView.Adapter<fCodeAdapter.Holder> {
 
