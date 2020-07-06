@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         final TextView provaTXT;
         final CFgenerator prova;
         final BarCodeGenerator prova2;
-
         final ImageView provaVIEW;
 
         Holder() {
