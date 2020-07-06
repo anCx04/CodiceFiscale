@@ -82,11 +82,10 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
 
-
     }
 
 
-    class Holder  {
+    class Holder {
 
         final RecyclerView rvCocktails;
         final FloatingActionMenu materialDesignFAM;
@@ -135,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-
                     Toast.makeText(getApplicationContext(), "button2", Toast.LENGTH_SHORT).show();
                     IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
                     integrator.initiateScan();
@@ -143,31 +141,41 @@ public class MainActivity extends AppCompatActivity {
                     new IntentIntegrator(MainActivity.this).initiateScan();
 
 
-
-
-
                 }
             });
+
 
         }
 
 
+        public  void activityResult(int requestCode, int resultCode, Intent data) {
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (result != null) {
+                if (result.getContents() == null) {
+                    Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                }
+            } else {
+                // to do
+            }
+        }
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null) {
-            if(result.getContents() == null) {
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        holder.activityResult(requestCode, resultCode, data);
+
+
     }
+
+
+
+
 
     private class fCodeAdapter extends RecyclerView.Adapter<fCodeAdapter.Holder> {
 

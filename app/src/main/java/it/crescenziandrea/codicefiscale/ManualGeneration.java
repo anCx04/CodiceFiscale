@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -22,12 +24,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.wdullaer.materialdatetimepicker.date.DatePickerController;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.util.Calendar;
 import java.util.List;
 
 public class ManualGeneration extends AppCompatActivity {
@@ -39,14 +44,21 @@ public class ManualGeneration extends AppCompatActivity {
         setContentView(R.layout.activity_manual_generation);
         holder = new Holder();
 
+
+
     }
 
 
-    class Holder{
+    class Holder implements DatePickerDialog.OnDateSetListener {
         AutoCompleteTextView tvRegion;
         AutoCompleteTextView tvProvince;
         AutoCompleteTextView tvDistrict;
+        Button btn;
         final VolleyCocktail model;
+        Calendar calendar ;
+        int day;
+        int month;
+        int year;
         private int search = 0;
 
 
@@ -79,6 +91,21 @@ public class ManualGeneration extends AppCompatActivity {
             tvProvince = findViewById(R.id.tvProvince);
             tvDistrict = findViewById(R.id.tvDistrict);
 
+            calendar = Calendar.getInstance();
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+            month = calendar.get(Calendar.MONTH);
+            year = calendar.get(Calendar.YEAR);
+
+            btn = findViewById(R.id.calendar);
+
+            btn.setOnClickListener(new View.OnClickListener() {
+                                       @Override
+                                       public void onClick(View v) {
+                                           DatePickerDialog dialog = DatePickerDialog.newInstance(holder,day,month,year);
+                                           dialog.show(getSupportFragmentManager(),"DatePickerDialog");
+
+                                       }
+                                   });
 
             tvProvince.setOnTouchListener(new View.OnTouchListener(){
 
@@ -117,6 +144,12 @@ public class ManualGeneration extends AppCompatActivity {
                     fillList(listToArrayString(cnt)); //il metodo fill chiama una funzione chiamata fillList
                 }
             };
+        }
+
+        @Override
+        public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+           //String date = "You picked the following date: "+dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
+            return ;
         }
 
         private void fillList(String[] cnt) { //fa il filling della RecyclerView
