@@ -2,6 +2,7 @@ package it.crescenziandrea.codicefiscale;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -30,7 +31,12 @@ import java.lang.reflect.Type;
 import java.util.Calendar;
 import java.util.List;
 
-public class ManualGeneration extends AppCompatActivity {
+public class ManualGeneration extends AppCompatActivity implements Dialog.DialogListener {
+    @Override
+    public void applyEntry(String Cfcode, String alias, Bitmap barcode) {
+         //TODO: passare i valori al DOA li posso prendere da CFcode e alias
+    }
+
     Holder holder;
 
     @Override
@@ -191,13 +197,19 @@ public class ManualGeneration extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if(v.getId() == bt_gen.getId()){
+                openDialog();
                 Intent output = new Intent();
                 output.putExtra("alias", "io");
                 output.putExtra("fCode", "CRSNDR98H11H501H");
                 setResult(RESULT_OK, output);
-                finish();
+                //finish();
             }
         }
+    }
+
+    public void openDialog() {
+        Dialog dialog = new Dialog();
+        dialog.show(getSupportFragmentManager(), "Popup");
     }
 
     abstract class VolleyCocktail implements Response.ErrorListener, Response.Listener<String> { //attraverso Volley prende i dati del sito cocktaildb, è la classe che fa da interfaccia tra cocktaildb e la nostra app

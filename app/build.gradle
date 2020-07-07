@@ -52,6 +52,7 @@ dependencies {
     // zxing barcode
     implementation 'com.google.zxing:core:3.2.1'
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
+    implementation 'com.google.android.material:material:<version>'
 
     //picker dialog
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
