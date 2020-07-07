@@ -192,14 +192,17 @@ public class ManualGeneration extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if(v.getId() == bt_gen.getId()){
+                startActivity(new Intent(ManualGeneration.this,Pop.class));
                 Intent output = new Intent();
                 output.putExtra("alias", "io");
                 output.putExtra("fCode", "CRSNDR98H11H501H");
                 setResult(RESULT_OK, output);
-                finish();
+                //finish();
             }
         }
     }
+
+
 
     abstract class VolleyCocktail implements Response.ErrorListener, Response.Listener<String> { //attraverso Volley prende i dati del sito cocktaildb, è la classe che fa da interfaccia tra cocktaildb e la nostra app
         abstract void fill(List<ProDis> cnt); //la UI sarà gestita dalla classe chiamante andando a implementare il metodo fill

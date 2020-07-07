@@ -26,5 +26,9 @@
         <item name="cornerSize">4dp</item>
     </style>
 
-
+    <style name="AppTheme.CustomTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:elevation">21dp</item>
+    </style>
 </resources>
