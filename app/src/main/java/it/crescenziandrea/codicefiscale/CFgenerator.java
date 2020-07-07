@@ -140,7 +140,7 @@ public class CFgenerator {
                     if(consonant.length() == 3) break;
                 }
             }
-            if(consonant.length() < 3) consonant += "x";
+            if(consonant.length() < 3) consonant += "X";
             result = consonant;
         }
 
