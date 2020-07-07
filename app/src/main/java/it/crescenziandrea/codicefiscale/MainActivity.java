@@ -1,17 +1,7 @@
 package it.crescenziandrea.codicefiscale;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-
-import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.clans.fab.FloatingActionMenu;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+
 import com.github.clans.fab.FloatingActionButton;
-import com.google.android.material.imageview.ShapeableImageView;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.zxing.WriterException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -123,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
             floatingActionButton1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), "button1", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, ManualGeneration.class);
                     MainActivity.this.startActivity(intent);
                 }
@@ -131,9 +125,6 @@ public class MainActivity extends AppCompatActivity {
             floatingActionButton2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
-                    Toast.makeText(getApplicationContext(), "button2", Toast.LENGTH_SHORT).show();
                     IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
                     integrator.initiateScan();
 
@@ -188,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-            View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cards_leyout, parent, false);
+            View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cards_layout, parent, false);
             return new Holder(layoutView);
         }
 

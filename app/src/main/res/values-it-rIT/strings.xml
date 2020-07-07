@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CodiceFiscale</string>
+    <string name="province">Seleziona una provincia</string>
+    <string name="district">Seleziona un comune</string>
+    <string name="region">Seleziona una regione</string>
+    <string name="surname">Cognome</string>
+    <string name="name">Nome</string>
+    <string name="date">Data</string>
+    <string name="alias">Soprannome</string>
+    <string name="title">Titolo</string>
+    <string name="manual">Generazione manuale</string>
+    <string name="newFC">Aggiungi nuovo</string>
+</resources>

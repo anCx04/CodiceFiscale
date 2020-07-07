@@ -8,32 +8,39 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/surname"
-        android:layout_width="248dp"
-        android:layout_height="69dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:hint="surname"
+        android:id="@+id/textInputLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/surname"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/surname"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="206dp"
+            tools:layout_editor_absoluteY="347dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/name"
-        android:layout_width="250dp"
-        android:layout_height="63dp"
-        android:layout_marginStart="16dp"
+        android:id="@+id/textInputLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:hint="name"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/name"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surname">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -41,31 +48,34 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/calendar"
-        android:layout_width="109dp"
-
-        android:layout_height="51dp"
-        android:layout_marginTop="32dp"
-        app:icon="@drawable/twotone_today_white_18dp"
         style="@style/Widget.MaterialComponents.Button.Icon"
-        android:text="date"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/date"
+        app:icon="@drawable/twotone_today_white_18dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.578"
-        app:layout_constraintStart_toEndOf="@+id/surname"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout6" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/gender"
+        android:id="@+id/textInputLayout4"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_width="108dp"
-        android:layout_height="63dp"
-        android:layout_marginTop="18dp"
-        android:hint="M/F"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/gender"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.578"
-        app:layout_constraintStart_toEndOf="@+id/name"
-        app:layout_constraintTop_toBottomOf="@+id/calendar">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
         <AutoCompleteTextView
+            android:id="@+id/tvGender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none" />
@@ -76,13 +86,15 @@
 
         android:id="@+id/textInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_width="182dp"
-        android:layout_height="63dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:hint="Select a region"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/region"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
 
         <AutoCompleteTextView
             android:id="@+id/tvRegion"
@@ -94,14 +106,17 @@
 
     <com.google.android.material.textfield.TextInputLayout
 
+        android:id="@+id/textInputLayout5"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_width="182dp"
-        android:layout_height="63dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="Select a Province"
+        android:hint="@string/province"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gender">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
         <AutoCompleteTextView
             android:id="@+id/tvProvince"
@@ -112,20 +127,45 @@
 
     <com.google.android.material.textfield.TextInputLayout
 
+        android:id="@+id/textInputLayout6"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_width="182dp"
-        android:layout_height="63dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:hint="Select a district"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/district"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
 
         <AutoCompleteTextView
             android:id="@+id/tvDistrict"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:completionThreshold="1" />
+            android:completionThreshold="1"
+            tools:ignore="LabelFor"
+            tools:layout_editor_absoluteX="107dp"
+            tools:layout_editor_absoluteY="197dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:hint="@string/alias"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/alias"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="206dp"
+            tools:layout_editor_absoluteY="347dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
 

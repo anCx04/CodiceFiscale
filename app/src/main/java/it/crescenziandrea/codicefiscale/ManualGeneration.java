@@ -1,10 +1,5 @@
 package it.crescenziandrea.codicefiscale;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +8,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,12 +20,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.wdullaer.materialdatetimepicker.date.DatePickerController;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.Calendar;
@@ -53,6 +47,7 @@ public class ManualGeneration extends AppCompatActivity {
         AutoCompleteTextView tvRegion;
         AutoCompleteTextView tvProvince;
         AutoCompleteTextView tvDistrict;
+        AutoCompleteTextView tvGender;
         Button btn;
         final VolleyCocktail model;
         Calendar calendar ;
@@ -63,26 +58,28 @@ public class ManualGeneration extends AppCompatActivity {
 
 
 
-        String[] region = new String[]{"veneto",
-                "lombardia",
-                "toscana",
-                "sardegna",
-                "abruzzo",
-                "basilicata",
-                "sicilia",
-                "puglia",
-                "piemonte",
-                "lazio",
-                "campania",
-                "calabria",
-                "marche",
-                "umbria",
-                "molise",
-                "emilia romagna",
-                "friuli venezia giulia",
-                "liguria",
-                "trentino alto adige",
-                "valle d'aosta"};
+        String[] region = new String[]{"Veneto",
+                "Lombardia",
+                "Toscana",
+                "Sardegna",
+                "Abruzzo",
+                "Basilicata",
+                "Sicilia",
+                "Puglia",
+                "Piemonte",
+                "Lazio",
+                "Campania",
+                "Calabria",
+                "Marche",
+                "Umbria",
+                "Molise",
+                "Emilia Romagna",
+                "Friuli Venezia Giulia",
+                "Liguria",
+                "Trentino Alto Adige",
+                "Valle d'Aosta"};
+
+        String[] gender = new String[]{"M","F"};
 
 
         @SuppressLint("ClickableViewAccessibility")
@@ -90,6 +87,7 @@ public class ManualGeneration extends AppCompatActivity {
             tvRegion = findViewById(R.id.tvRegion);
             tvProvince = findViewById(R.id.tvProvince);
             tvDistrict = findViewById(R.id.tvDistrict);
+            tvGender = findViewById(R.id.tvGender);
 
             calendar = Calendar.getInstance();
             day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -135,6 +133,10 @@ public class ManualGeneration extends AppCompatActivity {
             ArrayAdapter<String> adapterRegion = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, region);
             tvRegion.setAdapter(adapterRegion);
 
+            ArrayAdapter<String> adapterGender = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, gender);
+            tvGender.setAdapter(adapterGender);
+
+
 
             this.model = new VolleyCocktail() {                                                 //inizializziamo il modello di acquisizione dati che è un new VolleyCocktail
                 @Override
@@ -157,12 +159,12 @@ public class ManualGeneration extends AppCompatActivity {
 
             switch(search){
                 case 2:
-                    adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, cnt);
+                    adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, cnt);
                     tvProvince.setAdapter(adapter);
                     break;
 
                 case 3:
-                    adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, cnt);
+                    adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, cnt);
                     tvDistrict.setAdapter(adapter);
                     break;
 
@@ -193,7 +195,7 @@ public class ManualGeneration extends AppCompatActivity {
         private int search = 0; ;
 
         public void searchRegion() {
-            String url = "https://comuni-ita.herokuapp.com/api/regioni";
+            String url = "https://comuni-ita.herokuapp.com/api/regioni"; //usiamo il metodo search per la ricerca per nome
             search = 1;
             apiCall(url);
         }
@@ -201,7 +203,6 @@ public class ManualGeneration extends AppCompatActivity {
         public void searchProvince(String id) {
             String url = "https://comuni-ita.herokuapp.com/api/province/%s"; //usiamo il metodo search per la ricerca per nome
             url = String.format(url, id);
-            //Toast.makeText(getApplicationContext(), url, Toast.LENGTH_LONG).show();
             search = 2;
             apiCall(url);
         }
