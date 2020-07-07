@@ -11,4 +11,5 @@
     <string name="title">Titolo</string>
     <string name="manual">Generazione manuale</string>
     <string name="newFC">Aggiungi nuovo</string>
+    <string name="generate">Genera</string>
 </resources>

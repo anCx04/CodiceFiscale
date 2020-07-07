@@ -108,14 +108,13 @@ public class ManualGeneration extends AppCompatActivity {
 
                                        }
                                    });
-
             tvProvince.setOnTouchListener(new View.OnTouchListener(){
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    model.searchProvince(tvRegion.getText().toString());
-                    Toast.makeText(getApplicationContext(), "Provincie", Toast.LENGTH_LONG).show();
-                    search = 2;
+                        model.searchProvince(tvRegion.getText().toString());
+                        Toast.makeText(getApplicationContext(), "Provincie", Toast.LENGTH_LONG).show();
+                        search = 2;
                     return false;
                 }
             });
@@ -139,8 +138,6 @@ public class ManualGeneration extends AppCompatActivity {
 
             ArrayAdapter<String> adapterGender = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, gender);
             tvGender.setAdapter(adapterGender);
-
-
 
             this.model = new VolleyCocktail() {                                                 //inizializziamo il modello di acquisizione dati che è un new VolleyCocktail
                 @Override

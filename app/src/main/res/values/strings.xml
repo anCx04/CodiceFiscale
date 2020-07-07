@@ -12,4 +12,5 @@
     <string name="manual">Manual generation</string>
     <string name="barcode" translatable="false">BarCode Scanner</string>
     <string name="newFC">Add new</string>
+    <string name="generate">Generate</string>
 </resources>
