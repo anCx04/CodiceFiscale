@@ -6,12 +6,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +18,6 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.clans.fab.FloatingActionButton;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.google.zxing.WriterException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -36,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
     private appFiscalCodeDatabase db;
     Holder holder;
+    private final int keyReqManualGen = 10;
+    private final int keyReqAutGen = 49374;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,22 +42,10 @@ public class MainActivity extends AppCompatActivity {
 
         createDB();
 
-        FiscalCode fCode1 = new FiscalCode("josef");
-        FiscalCode fCode2 = new FiscalCode("francesca");
-        FiscalCode fCode3 = new FiscalCode("andrea");
-        FiscalCode fCode4 = new FiscalCode("yuri");
-        FiscalCode fCode5 = new FiscalCode("alessandro");
-        FiscalCode fCode6 = new FiscalCode("roberto");
-        FiscalCode fCode7 = new FiscalCode("Maria");
-        FiscalCode fCode8 = new FiscalCode("francesco");
+        FiscalCode fCode1 = new FiscalCode( "josef","josef");
+
         db.roomDAO().addData(fCode1);
-        db.roomDAO().addData(fCode2);
-        db.roomDAO().addData(fCode3);
-        db.roomDAO().addData(fCode4);
-        db.roomDAO().addData(fCode5);
-        db.roomDAO().addData(fCode6);
-        db.roomDAO().addData(fCode7);
-        db.roomDAO().addData(fCode8);
+
 
 
         holder = new Holder();
@@ -85,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    class Holder {
+    class Holder implements FloatingActionButton.OnClickListener {
 
         final RecyclerView rvCocktails;
         final FloatingActionMenu materialDesignFAM;
@@ -120,44 +106,64 @@ public class MainActivity extends AppCompatActivity {
             rvCocktails.addItemDecoration(new ProductGridItemDecoration(largePadding, smallPadding));
 
 
-            floatingActionButton1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), "button1", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, ManualGeneration.class);
-                    MainActivity.this.startActivity(intent);
-                }
-            });
-            floatingActionButton2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-                    Toast.makeText(getApplicationContext(), "button2", Toast.LENGTH_SHORT).show();
-                    IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
-                    integrator.initiateScan();
-
-                    new IntentIntegrator(MainActivity.this).initiateScan();
-
-
-                }
-            });
+            floatingActionButton1.setOnClickListener(this);
+            floatingActionButton2.setOnClickListener(this);
 
 
         }
 
 
         public  void activityResult(int requestCode, int resultCode, Intent data) {
-            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-            if (result != null) {
-                if (result.getContents() == null) {
-                    Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                }
-            } else {
-                // to do
+
+            // requestCode = 49374
+            switch(requestCode){
+                case keyReqManualGen:
+
+                    if (  resultCode == RESULT_OK && data != null) {
+                        String str1 = data.getStringExtra("alias");
+                        String str2 = data.getStringExtra("fCode");
+
+                        FiscalCode fcDatabase = new FiscalCode(str2,str1);
+                        db.roomDAO().addData(fcDatabase);
+                    }
+
+                    break;
+                case keyReqAutGen:
+                    IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+                    if (result != null) {
+                        if (result.getContents() == null) {
+                            Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
+                        } else {
+                            FiscalCode fcDatabase = new FiscalCode(result.getContents(),"autosave");
+                            db.roomDAO().addData(fcDatabase);
+                        }
+                    } else {
+                        // to do
+                    }
             }
+
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            if(v.getId() == floatingActionButton1.getId()){
+
+                Intent intent = new Intent(MainActivity.this, ManualGeneration.class);
+                MainActivity.this.startActivityForResult(intent,keyReqManualGen);
+
+            }
+
+            if(v.getId() == floatingActionButton2.getId()){
+
+
+                IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
+                integrator.initiateScan();
+                new IntentIntegrator(MainActivity.this).initiateScan();
+
+            }
+
+
         }
     }
 
@@ -166,12 +172,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-
         holder.activityResult(requestCode, resultCode, data);
 
-
     }
-
 
 
 
@@ -234,5 +237,9 @@ public class MainActivity extends AppCompatActivity {
             outRect.bottom = largePadding;
         }
 
+    }
+
+    public void createEntryFC(){
+        return;
     }
 }
