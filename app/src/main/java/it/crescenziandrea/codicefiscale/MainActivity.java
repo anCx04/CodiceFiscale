@@ -16,8 +16,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.clans.fab.FloatingActionMenu;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+
 import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.zxing.WriterException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -106,6 +112,24 @@ public class MainActivity extends AppCompatActivity {
             rvCocktails.addItemDecoration(new ProductGridItemDecoration(largePadding, smallPadding));
 
 
+            floatingActionButton1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, ManualGeneration.class);
+                    MainActivity.this.startActivity(intent);
+                }
+            });
+            floatingActionButton2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
+                    integrator.initiateScan();
+
+                    new IntentIntegrator(MainActivity.this).initiateScan();
+
+
+                }
+            });
             floatingActionButton1.setOnClickListener(this);
             floatingActionButton2.setOnClickListener(this);
 
@@ -191,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-            View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cards_leyout, parent, false);
+            View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cards_layout, parent, false);
             return new Holder(layoutView);
         }
 
