@@ -1,5 +1,11 @@
 package it.crescenziandrea.codicefiscale;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -31,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     private appFiscalCodeDatabase db;
     Holder holder;
+    private final int keyReqManualGen = 10;
+    private final int keyReqAutGen = 49374;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,22 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
         createDB();
 
-        FiscalCode fCode1 = new FiscalCode("josef");
-        FiscalCode fCode2 = new FiscalCode("francesca");
-        FiscalCode fCode3 = new FiscalCode("andrea");
-        FiscalCode fCode4 = new FiscalCode("yuri");
-        FiscalCode fCode5 = new FiscalCode("alessandro");
-        FiscalCode fCode6 = new FiscalCode("roberto");
-        FiscalCode fCode7 = new FiscalCode("Maria");
-        FiscalCode fCode8 = new FiscalCode("francesco");
+        FiscalCode fCode1 = new FiscalCode( "josef","josef");
+
         db.roomDAO().addData(fCode1);
-        db.roomDAO().addData(fCode2);
-        db.roomDAO().addData(fCode3);
-        db.roomDAO().addData(fCode4);
-        db.roomDAO().addData(fCode5);
-        db.roomDAO().addData(fCode6);
-        db.roomDAO().addData(fCode7);
-        db.roomDAO().addData(fCode8);
+
 
 
         holder = new Holder();
@@ -80,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    class Holder {
+    class Holder implements FloatingActionButton.OnClickListener {
 
         final RecyclerView rvCocktails;
         final FloatingActionMenu materialDesignFAM;
@@ -133,22 +130,64 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
+            floatingActionButton1.setOnClickListener(this);
+            floatingActionButton2.setOnClickListener(this);
 
 
         }
 
 
         public  void activityResult(int requestCode, int resultCode, Intent data) {
-            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-            if (result != null) {
-                if (result.getContents() == null) {
-                    Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                }
-            } else {
-                // to do
+
+            // requestCode = 49374
+            switch(requestCode){
+                case keyReqManualGen:
+
+                    if (  resultCode == RESULT_OK && data != null) {
+                        String str1 = data.getStringExtra("alias");
+                        String str2 = data.getStringExtra("fCode");
+
+                        FiscalCode fcDatabase = new FiscalCode(str2,str1);
+                        db.roomDAO().addData(fcDatabase);
+                    }
+
+                    break;
+                case keyReqAutGen:
+                    IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+                    if (result != null) {
+                        if (result.getContents() == null) {
+                            Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
+                        } else {
+                            FiscalCode fcDatabase = new FiscalCode(result.getContents(),"autosave");
+                            db.roomDAO().addData(fcDatabase);
+                        }
+                    } else {
+                        // to do
+                    }
             }
+
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            if(v.getId() == floatingActionButton1.getId()){
+
+                Intent intent = new Intent(MainActivity.this, ManualGeneration.class);
+                MainActivity.this.startActivityForResult(intent,keyReqManualGen);
+
+            }
+
+            if(v.getId() == floatingActionButton2.getId()){
+
+
+                IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
+                integrator.initiateScan();
+                new IntentIntegrator(MainActivity.this).initiateScan();
+
+            }
+
+
         }
     }
 
@@ -157,12 +196,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-
         holder.activityResult(requestCode, resultCode, data);
 
-
     }
-
 
 
 
@@ -179,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-            View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cards_layout, parent, false);
+            View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cards_leyout, parent, false);
             return new Holder(layoutView);
         }
 
@@ -225,5 +261,9 @@ public class MainActivity extends AppCompatActivity {
             outRect.bottom = largePadding;
         }
 
+    }
+
+    public void createEntryFC(){
+        return;
     }
 }

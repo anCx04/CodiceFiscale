@@ -13,8 +13,8 @@ import java.util.List;
 @Dao
 public interface roomDAO {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void addData(FiscalCode fCode);
+    @Insert
+    void addData(FiscalCode fiscalCode);
 
     @Query("select * from FC_table")
     public List<FiscalCode>getMyData();

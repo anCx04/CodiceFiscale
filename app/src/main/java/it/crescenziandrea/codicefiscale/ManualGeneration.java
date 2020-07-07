@@ -1,6 +1,7 @@
 package it.crescenziandrea.codicefiscale;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -43,12 +44,13 @@ public class ManualGeneration extends AppCompatActivity {
     }
 
 
-    class Holder implements DatePickerDialog.OnDateSetListener {
+    class Holder implements DatePickerDialog.OnDateSetListener,Button.OnClickListener {
         AutoCompleteTextView tvRegion;
         AutoCompleteTextView tvProvince;
         AutoCompleteTextView tvDistrict;
         AutoCompleteTextView tvGender;
         Button btn;
+        Button bt_gen;
         final VolleyCocktail model;
         Calendar calendar ;
         int day;
@@ -88,6 +90,8 @@ public class ManualGeneration extends AppCompatActivity {
             tvProvince = findViewById(R.id.tvProvince);
             tvDistrict = findViewById(R.id.tvDistrict);
             tvGender = findViewById(R.id.tvGender);
+            bt_gen = findViewById(R.id.bt_gen);
+            bt_gen.setOnClickListener(this);
 
             calendar = Calendar.getInstance();
             day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -187,6 +191,16 @@ public class ManualGeneration extends AppCompatActivity {
             return str;
         }
 
+        @Override
+        public void onClick(View v) {
+            if(v.getId() == bt_gen.getId()){
+                Intent output = new Intent();
+                output.putExtra("alias", "io");
+                output.putExtra("fCode", "CRSNDR98H11H501H");
+                setResult(RESULT_OK, output);
+                finish();
+            }
+        }
     }
 
     abstract class VolleyCocktail implements Response.ErrorListener, Response.Listener<String> { //attraverso Volley prende i dati del sito cocktaildb, è la classe che fa da interfaccia tra cocktaildb e la nostra app
