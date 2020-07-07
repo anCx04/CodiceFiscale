@@ -4,7 +4,7 @@
     <string name="district">Select a district</string>
     <string name="region">Select a region</string>
     <string name="surname">Surname</string>
-    <string name="name">Name</string>
+    <string name="name">First name</string>
     <string name="date">Date</string>
     <string name="gender" translatable="false">M/F</string>
     <string name="alias">Alias</string>
