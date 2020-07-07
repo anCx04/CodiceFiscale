@@ -17,6 +17,8 @@
             android:id="@+id/CFresult"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="true"
+            android:contextClickable="false"
             android:text="Ciao" />
     </com.google.android.material.textfield.TextInputLayout>
 
