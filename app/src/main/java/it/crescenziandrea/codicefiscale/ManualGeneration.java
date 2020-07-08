@@ -315,7 +315,7 @@ public class ManualGeneration extends AppCompatActivity  {
 
         @Override
         public void onErrorResponse(VolleyError error) {
-            Toast.makeText(getApplicationContext(), "SOMETHING WENT WRONG", Toast.LENGTH_LONG).show(); //mettiamo un toast per dire all'utente che c'è stato qualcosa che non è andato a buon fine
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error), Toast.LENGTH_LONG).show(); //mettiamo un toast per dire all'utente che c'è stato qualcosa che non è andato a buon fine
         }
 
         @Override

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FiscalCode</string>
+    <string name="app_name">Fiscal Code</string>
     <string name="province">Select a province</string>
     <string name="district">Select a district</string>
     <string name="region">Select a region</string>
@@ -7,10 +7,12 @@
     <string name="name">First name</string>
     <string name="date">Date</string>
     <string name="gender" translatable="false">M/F</string>
-    <string name="alias">Alias</string>
+    <string name="alias">Nickname</string>
     <string name="title">Title</string>
     <string name="manual">Manual generation</string>
     <string name="barcode" translatable="false">BarCode Scanner</string>
     <string name="newFC">Add new</string>
     <string name="generate">Generate</string>
+    <string name="error">Something went wrong...</string>
+    <string name="complete">Complete all the fields!</string>
 </resources>

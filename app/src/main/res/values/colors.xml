@@ -10,4 +10,6 @@
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#ffffff</color>
     <color name="backgroundLayout">#F3F3F3</color>
+    <color name="colorRipple">#99d4d4d4</color>
+
 </resources>

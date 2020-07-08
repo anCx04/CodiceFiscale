@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CodiceFiscale</string>
+    <string name="app_name">Codice Fiscale</string>
     <string name="province">Seleziona una provincia</string>
     <string name="district">Seleziona un comune</string>
     <string name="region">Seleziona una regione</string>
@@ -12,4 +12,6 @@
     <string name="manual">Generazione manuale</string>
     <string name="newFC">Aggiungi nuovo</string>
     <string name="generate">Genera</string>
+    <string name="error">Qualcosa è andato storto...</string>
+    <string name="complete">Completa tutti i campi!</string>
 </resources>

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@android:color/white"
-    app:cardElevation="2dp"
+    app:cardElevation="@dimen/cardElevation"
     app:cardPreventCornerOverlap="true">
 
     <LinearLayout
@@ -14,7 +14,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_fcode"
             android:layout_width="match_parent"
-            android:layout_height="108dp"
+            android:layout_height="@dimen/card"
             android:background="?attr/colorPrimaryDark"
             android:scaleType="centerCrop"
             />
@@ -23,20 +23,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/tab_padding_bottom">
 
             <TextView
                 android:id="@+id/tv_nome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Title"
+                android:text="@string/alias"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
                 android:id="@+id/tv_FiscalCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="secondary text"
+                android:text="@string/app_name"
                 android:textAppearance="?attr/textAppearanceBody2" />
         </LinearLayout>
     </LinearLayout>
