@@ -11,17 +11,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="Fiscal Code"
-
-        >
+        android:hint="Fiscal Code">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/CFresult"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Ciao"
-            android:enabled="false"
-            />
+            android:text="Ciao" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
