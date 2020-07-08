@@ -68,4 +68,8 @@ public class Dialog extends AppCompatDialogFragment{
     public interface DialogListener {
         void applyEntry(String Cfcode, String alias, Bitmap barCode);
     }
+
+    public void setInfo(String Cfcode, Bitmap bitmap) {
+
+    }
 }
