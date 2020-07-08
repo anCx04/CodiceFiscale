@@ -71,4 +71,8 @@ public class Dialog extends AppCompatDialogFragment{
         void applyEntry(String Cfcode, String alias);
         String setCFcode();
     }
+
+    public void setInfo(String Cfcode, Bitmap bitmap) {
+
+    }
 }
