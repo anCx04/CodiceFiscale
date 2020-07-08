@@ -1,19 +1,24 @@
 package it.crescenziandrea.codicefiscale;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -33,21 +38,14 @@ import org.json.JSONException;
 import java.lang.reflect.Type;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public class ManualGeneration extends AppCompatActivity  {
 
-    /*
-    @Override
-    public void applyEntry(String Cfcode, String alias) {
-         //TODO: passare i valori al DOA li posso prendere da CFcode e alias
-        holder.alias = alias;
-    }
 
-    @Override
-    public String setCFcode() {
-        return holder.cfcode.Calculate();
-    }
-     */
+    String bDayKey = "bDay";
+    String bMounthKey = "bMount";
+    String bYearKey = "bYear";
 
     Holder holder;
 
@@ -61,6 +59,21 @@ public class ManualGeneration extends AppCompatActivity  {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) { //vado a scrivere nel Bundle che mi viene passato che sarà poi passato nuovamente all'app per salvarne lo stato
+        outState.putInt(bDayKey, holder.bDay); //aggiungiamo al Bundle coppie chiave/valore
+        outState.putInt(bMounthKey, holder.bMonth);
+        outState.putInt(bYearKey, holder.bYear);
+        super.onSaveInstanceState(outState);
+    }
+
+    protected void onRestoreInstanceState(Bundle savedInstanceState) { //gli passiamo lo stesso bundle che avevamo avuto in input nella onSaveInstanceState per fare il restoring dello stato
+        holder.bDay = savedInstanceState.getInt(bDayKey);
+        holder.bMonth = savedInstanceState.getInt(bMounthKey);
+        holder.bYear = savedInstanceState.getInt(bYearKey);
+        holder.btn.setText(holder.bDay+"/"+holder.bMonth+"/"+holder.bYear);
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
     class Holder implements DatePickerDialog.OnDateSetListener,View.OnClickListener, View.OnTouchListener {
 
@@ -74,17 +87,18 @@ public class ManualGeneration extends AppCompatActivity  {
         List<ProDis> prov ;
         CFgenerator cfcode;
         String[] str;
+        String str2;
         TextInputEditText alias;
         Button btn;
         Button bt_gen;
         final VolleyApi model;
         Calendar calendar ;
-        int day;
+        int day ;
         int month;
         int year;
-        int bDay;
-        int bMonth;
-        int bYear;
+        int bDay = -1;
+        int bMonth = -1;
+        int bYear = -1;
         private int search = 0;
 
 
@@ -123,26 +137,33 @@ public class ManualGeneration extends AppCompatActivity  {
             tvGender = findViewById(R.id.tvGender);
             bt_gen = findViewById(R.id.bt_gen);
             alias = findViewById(R.id.alias);
-            bt_gen.setOnClickListener(this);
-
-            tvProvince.setEnabled(false);
-            tvDistrict.setEnabled(true);
-
-            calendar = Calendar.getInstance();
-            day = calendar.get(Calendar.DAY_OF_MONTH);
-            month = calendar.get(Calendar.MONTH);
-            year = calendar.get(Calendar.YEAR);
-
             btn = findViewById(R.id.calendar);
 
             btn.setOnClickListener(this);
+            bt_gen.setOnClickListener(this);
+            tvProvince.setOnTouchListener(this);
+            tvDistrict.setOnTouchListener(this);
+
+
+            tvProvince.setEnabled(false);
+            tvDistrict.setEnabled(false);
+
+            calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+            month = calendar.get(Calendar.MONTH);
+            year = calendar.get(Calendar.YEAR);
+            calendar.set(day,month,year);
+
+
+
+
 
             tvRegion.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     if (tvRegion.isPerformingCompletion()) {
                         tvProvince.setEnabled(true);
-                        tvDistrict.setEnabled(true);
+                        tvDistrict.setEnabled(false);
                     }
                 }
 
@@ -157,9 +178,25 @@ public class ManualGeneration extends AppCompatActivity  {
                 }
             });
 
+            tvProvince.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    tvDistrict.setEnabled(true);
+                }
 
-            tvProvince.setOnTouchListener(this);
-            tvDistrict.setOnTouchListener(this);
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+
+
 
 
 
@@ -171,10 +208,10 @@ public class ManualGeneration extends AppCompatActivity  {
 
 
 
-            this.model = new VolleyApi() {                                                 //inizializziamo il modello di acquisizione dati che è un new VolleyCocktail
+            this.model = new VolleyApi() {
                 @Override
                 void fill(List<ProDis> cnt) {
-                    fillList(cnt); //il metodo fill chiama una funzione chiamata fillList
+                    fillList(cnt);
                 }
             };
         }
@@ -184,10 +221,15 @@ public class ManualGeneration extends AppCompatActivity  {
            bDay = dayOfMonth;
            bMonth = (monthOfYear+1);
            bYear = year;
+
+           str2 = bDay +"/"+ bMonth +"/"+bYear;
+
+           btn.setText(str2);
             return ;
         }
 
-        private void fillList(List<ProDis> cnt) { //fa il filling della RecyclerView
+        private void fillList(List<ProDis> cnt) {
+            //fa il filling della RecyclerView
 
 
             switch(search){
@@ -233,29 +275,35 @@ public class ManualGeneration extends AppCompatActivity  {
         public void onClick(View v) {
             if(v.getId() == bt_gen.getId()){
 
+                if(tvSurname.getText().toString().isEmpty() || tvName.getText().toString().isEmpty() || tvGender.getText().toString().isEmpty() || tvRegion.getText().toString().isEmpty()
+                    || tvProvince.getText().toString().isEmpty() || tvDistrict.getText().toString().isEmpty() || bDay == -1 || bMonth == -1 || bYear == -1 || alias.getText().toString().isEmpty() ){
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.complete),Toast.LENGTH_LONG).show();
+                }
+                else {
+                    cfcode = new CFgenerator(tvSurname.getText().toString().toUpperCase(),
+                            tvName.getText().toString().toUpperCase(),
+                            bDay,
+                            bMonth,
+                            bYear,
+                            tvGender.getText().toString().toUpperCase(),
+                            prov.get(getIndexOf(str, tvDistrict.getText().toString())).getCodCat());
 
+                    //openDialog();
 
-                cfcode = new CFgenerator(tvSurname.getText().toString().toUpperCase(),
-                        tvName.getText().toString().toUpperCase(),
-                        bDay,
-                        bMonth,
-                        bYear,
-                        tvGender.getText().toString().toUpperCase(),
-                        prov.get(getIndexOf(str,tvDistrict.getText().toString())).getCodCat());
-
-                //openDialog();
-
-                Intent output = new Intent();
-                output.putExtra("alias", alias.getText().toString());
-                output.putExtra("fCode", cfcode.Calculate());
-                setResult(RESULT_OK, output);
-                finish();
+                    Intent output = new Intent();
+                    output.putExtra("alias", alias.getText().toString());
+                    output.putExtra("fCode", cfcode.Calculate());
+                    setResult(RESULT_OK, output);
+                    finish();
+                }
             }
 
-            if(v.getId() == btn.getId()){
-                DatePickerDialog dialog = DatePickerDialog.newInstance(holder,day,month,year);
-                dialog.show(getSupportFragmentManager(),"DatePickerDialog");
+            if(v.getId() == btn.getId()) {
+
+                DatePickerDialog dialog = DatePickerDialog.newInstance(this);
+                dialog.show(getSupportFragmentManager(), "DatePickerDialog");
             }
+
         }
 
         @Override
@@ -272,6 +320,8 @@ public class ManualGeneration extends AppCompatActivity  {
             }
             return false;
         }
+
+
     }
 
     public void openDialog() {

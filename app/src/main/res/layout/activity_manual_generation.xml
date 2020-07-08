@@ -65,6 +65,7 @@
             android:layout_marginTop="@dimen/padding"
             android:layout_marginEnd="@dimen/padding"
             android:text="@string/date"
+            app:backgroundTint="@color/colorAccent"
             app:icon="@drawable/twotone_today_white_18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -88,7 +89,6 @@
                 android:id="@+id/tvGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none"
                 tools:ignore="LabelFor" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -192,6 +192,7 @@
             android:layout_marginTop="@dimen/padding"
             android:layout_marginEnd="@dimen/padding"
             android:layout_marginBottom="@dimen/padding"
+            android:backgroundTint="@color/colorAccent"
             android:text="@string/generate"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -137,7 +137,7 @@ public class CFgenerator {
         if(consonant.length() < 3) {
             for (i = 0; i <= string.length() - 1; i++) {
                 char character = string.charAt(i);
-                if (character == 'a' || character == 'e' || character == 'i' || character == 'o' || character == 'u' &&
+                if (character == 'a' || character == 'e' || character == 'i' || character == 'o' || character == 'u' ||
                         character == 'A' || character == 'E' || character == 'I' || character == 'O' || character == 'U') {
                     consonant += Character.toString(character);
                     if(consonant.length() == 3) break;
@@ -146,7 +146,7 @@ public class CFgenerator {
             if(consonant.length() < 3) consonant += "X";
             result = consonant;
         }
-        else result = consonant;
+
 
         if(consonant.length() > 3) {
             for(i=0; i<consonant.length();i++) {
@@ -155,6 +155,7 @@ public class CFgenerator {
                 if(result.length()==3) break;
             }
         }
+        else result = consonant;
 
         return result;
     }

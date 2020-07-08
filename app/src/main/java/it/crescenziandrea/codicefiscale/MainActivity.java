@@ -1,11 +1,13 @@
 package it.crescenziandrea.codicefiscale;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
     private final int keyReqManualGen = 10;
     private final int keyReqAutGen = 49374;
     private final int viewRecCode = 99;
+    final String saveStateShow = "show";
+    final String saveFcodeKey = "result";
+    private int show = 0;
+    AlertDialog alertDialogAndroid;
 
 
     @Override
@@ -53,6 +60,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) { //vado a scrivere nel Bundle che mi viene passato che sarà poi passato nuovamente all'app per salvarne lo stato
+        if(show == 1) {
+            outState.putInt(saveStateShow,show);
+            outState.putString(saveFcodeKey, holder.str.toString()); //aggiungiamo al Bundle coppie chiave/valore
+            alertDialogAndroid.dismiss();
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    protected void onRestoreInstanceState(Bundle savedInstanceState) { //gli passiamo lo stesso bundle che avevamo avuto in input nella onSaveInstanceState per fare il restoring dello stato
+
+        if(savedInstanceState.getInt(saveStateShow) == 1) {
+            showPopUp(savedInstanceState.getString(saveFcodeKey));
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
     private void createDB() {
         db = Room.databaseBuilder(getApplicationContext(),
                 appFiscalCodeDatabase.class,
@@ -68,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         final FloatingActionMenu materialDesignFAM;
         final FloatingActionButton floatingActionButton1;
         final FloatingActionButton floatingActionButton2;
+        String str;
 
 
         Holder() {
@@ -76,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
             materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
             floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
             floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
+
+
 
             genRecycleView();
 
@@ -112,13 +140,15 @@ public class MainActivity extends AppCompatActivity {
 
                     break;
                 case keyReqAutGen:
-                    IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+                    IntentResult result  = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
                     if (result != null) {
                         if (result.getContents() == null) {
                             Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
                         } else {
-                            FiscalCode fcDatabase = new FiscalCode(result.getContents(),"autosave");
-                            db.roomDAO().addData(fcDatabase);
+                            show = 1;
+                            str = result.getContents();
+                            showPopUp(str);
+
                         }
                     } else {
                         // to do
@@ -142,6 +172,8 @@ public class MainActivity extends AppCompatActivity {
 
             if(v.getId() == floatingActionButton1.getId()){
 
+                materialDesignFAM.close(true);
+
                 Intent intent = new Intent(MainActivity.this, ManualGeneration.class);
                 MainActivity.this.startActivityForResult(intent,keyReqManualGen);
 
@@ -149,10 +181,13 @@ public class MainActivity extends AppCompatActivity {
 
             if(v.getId() == floatingActionButton2.getId()){
 
+                materialDesignFAM.close(true);
 
                 IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
                 integrator.initiateScan();
                 new IntentIntegrator(MainActivity.this).initiateScan();
+
+
 
             }
 
@@ -250,6 +285,38 @@ public class MainActivity extends AppCompatActivity {
             outRect.bottom = largePadding;
         }
 
+    }
+
+    public void showPopUp(String result){
+
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(MainActivity.this);
+        View mView = layoutInflaterAndroid.inflate(R.layout.user_input_dialog_box, null);
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilderUserInput.setView(mView);
+
+        final EditText userInputDialogEditText = (EditText) mView.findViewById(R.id.userInputDialog);
+        alertDialogBuilderUserInput.setCancelable(false);
+        alertDialogBuilderUserInput.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogBox, int id) {
+
+                FiscalCode fcDatabase = new FiscalCode(result,userInputDialogEditText.getText().toString());
+                db.roomDAO().addData(fcDatabase);
+
+                holder.genRecycleView();
+                show = 0;
+                dialogBox.cancel();
+
+            }
+        });
+        alertDialogBuilderUserInput.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogBox, int id) {
+                        dialogBox.cancel();
+                    }
+                });
+
+        alertDialogAndroid = alertDialogBuilderUserInput.create();
+        alertDialogAndroid.show();
     }
 
 }
