@@ -99,7 +99,7 @@ public class CFgenerator {
                     if(i != 1) {
                         result += Character.toString(cons);
                     }
-                    if(result.length() <= 3) continue;
+                    if(result.length() < 3) continue;
                     else break;
                 }
             }
@@ -114,11 +114,13 @@ public class CFgenerator {
                         if(consonant.length() == 3) break;
                     }
                 }
-                if(consonant.length() < 3) consonant += "x";
+                if(consonant.length() < 3) consonant += "X";
                 result = consonant;
             }
         return result;
     }
+
+    //nobilio
 
     private String ConsonantCalculatorSurname(String string) {
         int i;
@@ -144,6 +146,7 @@ public class CFgenerator {
             if(consonant.length() < 3) consonant += "X";
             result = consonant;
         }
+        else result = consonant;
 
         if(consonant.length() > 3) {
             for(i=0; i<consonant.length();i++) {

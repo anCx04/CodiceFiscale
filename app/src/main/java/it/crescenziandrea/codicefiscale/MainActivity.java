@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,15 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.google.zxing.WriterException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -48,19 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         createDB();
-
-
         holder = new Holder();
-        /*
-        holder.provaTXT.setText(holder.prova.Calculate());
-        try {
-            holder.provaVIEW.setImageBitmap(holder.prova2.generateBarCode());
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-
-         */
-
 
     }
 
@@ -77,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
                 "FiscalCode.db")
                 .allowMainThreadQueries()
                 .build();
-
-
     }
 
 
@@ -88,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
         final FloatingActionMenu materialDesignFAM;
         final FloatingActionButton floatingActionButton1;
         final FloatingActionButton floatingActionButton2;
-        final TextView provaTXT;
-        final ImageView provaVIEW;
+
 
         Holder() {
 
@@ -97,12 +76,6 @@ public class MainActivity extends AppCompatActivity {
             materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
             floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
             floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
-            provaTXT = findViewById(R.id.tv_nome);
-            provaVIEW = findViewById(R.id.iv_drink);
-
-
-
-            //prova2 = new BarCodeGenerator(prova.Calculate());
 
             genRecycleView();
 
@@ -126,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
         public  void activityResult(int requestCode, int resultCode, Intent data) {
 
-            // requestCode = 49374
             switch(requestCode){
                 case keyReqManualGen:
 
@@ -220,7 +192,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull Holder holder, int position) {
 
-            holder.ItemView.setText(fCodes.get(position).getfCode());
+            holder.tv_name.setText(fCodes.get(position).getAlias());
+            holder.tv_fCode.setText(fCodes.get(position).getfCode());
 
         }
 
@@ -234,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
 
             int position = ((RecyclerView) v.getParent()).getChildAdapterPosition(v);
             FiscalCode fiscalCode = fCodes.get(position);
-            Toast.makeText(getApplicationContext(), fiscalCode.getAlias(), Toast.LENGTH_LONG).show();
 
             Intent intent = new Intent(MainActivity.this, barCodeActivity.class);
             intent.putExtra("fiscalCode",fiscalCode);
@@ -244,11 +216,17 @@ public class MainActivity extends AppCompatActivity {
 
         class Holder extends RecyclerView.ViewHolder{
 
-            final TextView ItemView;
+            final TextView tv_name;
+            final TextView tv_fCode;
+            final ImageView iv_fcode;
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
-                ItemView = itemView.findViewById(R.id.tv_nome);
+                tv_name = itemView.findViewById(R.id.tv_nome);
+                tv_fCode = itemView.findViewById(R.id.tv_FiscalCode);
+                iv_fcode = itemView.findViewById(R.id.iv_fcode);
+
+                iv_fcode.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.tslogo2));
             }
         }
 
@@ -274,7 +252,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void createEntryFC(){
-        return;
-    }
 }

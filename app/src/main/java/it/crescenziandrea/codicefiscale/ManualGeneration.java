@@ -62,7 +62,7 @@ public class ManualGeneration extends AppCompatActivity  {
     }
 
 
-    class Holder implements DatePickerDialog.OnDateSetListener,View.OnClickListener {
+    class Holder implements DatePickerDialog.OnDateSetListener,View.OnClickListener, View.OnTouchListener {
 
         TextInputEditText tvSurname;
         TextInputEditText tvName;
@@ -77,7 +77,7 @@ public class ManualGeneration extends AppCompatActivity  {
         TextInputEditText alias;
         Button btn;
         Button bt_gen;
-        final VolleyCocktail model;
+        final VolleyApi model;
         Calendar calendar ;
         int day;
         int month;
@@ -156,30 +156,10 @@ public class ManualGeneration extends AppCompatActivity  {
 
                 }
             });
-            tvProvince.setOnTouchListener(new View.OnTouchListener(){
 
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
 
-                    model.searchProvince(tvRegion.getText().toString());
-                    search = 2;
-                    Toast.makeText(getApplicationContext(), tvRegion.getText().toString(), Toast.LENGTH_LONG).show();
-
-                    return false;
-                }
-            });
-
-            tvDistrict.setOnTouchListener(new View.OnTouchListener(){
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    model.searchDistrict(tvProvince.getText().toString());
-                    search = 3;
-                    Toast.makeText(getApplicationContext(), "comuni", Toast.LENGTH_LONG).show();
-
-                    return false;
-                }
-            });
+            tvProvince.setOnTouchListener(this);
+            tvDistrict.setOnTouchListener(this);
 
 
 
@@ -191,11 +171,9 @@ public class ManualGeneration extends AppCompatActivity  {
 
 
 
-            this.model = new VolleyCocktail() {                                                 //inizializziamo il modello di acquisizione dati che è un new VolleyCocktail
+            this.model = new VolleyApi() {                                                 //inizializziamo il modello di acquisizione dati che è un new VolleyCocktail
                 @Override
                 void fill(List<ProDis> cnt) {
-                    Log.w("CA", "fill");
-                    Toast.makeText(getApplicationContext(), "fill", Toast.LENGTH_LONG).show();
                     fillList(cnt); //il metodo fill chiama una funzione chiamata fillList
                 }
             };
@@ -279,6 +257,21 @@ public class ManualGeneration extends AppCompatActivity  {
                 dialog.show(getSupportFragmentManager(),"DatePickerDialog");
             }
         }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+
+            if(v.getId() == tvProvince.getId()){
+                model.searchProvince(tvRegion.getText().toString());
+                search = 2;
+            }
+
+            if(v.getId() == tvDistrict.getId()){
+                model.searchDistrict(tvProvince.getText().toString());
+                search = 3;
+            }
+            return false;
+        }
     }
 
     public void openDialog() {
@@ -286,7 +279,7 @@ public class ManualGeneration extends AppCompatActivity  {
         dialog.show(getSupportFragmentManager(), "Popup");
     }
 
-    abstract class VolleyCocktail implements Response.ErrorListener, Response.Listener<String> { //attraverso Volley prende i dati del sito cocktaildb, è la classe che fa da interfaccia tra cocktaildb e la nostra app
+    abstract class VolleyApi implements Response.ErrorListener, Response.Listener<String> { //attraverso Volley prende i dati del sito cocktaildb, è la classe che fa da interfaccia tra cocktaildb e la nostra app
         abstract void fill(List<ProDis> cnt); //la UI sarà gestita dalla classe chiamante andando a implementare il metodo fill
 
         private int search = 0; ;
@@ -322,7 +315,6 @@ public class ManualGeneration extends AppCompatActivity  {
 
         @Override
         public void onErrorResponse(VolleyError error) {
-            Log.w("CA","error"+error.toString());
             Toast.makeText(getApplicationContext(), "SOMETHING WENT WRONG", Toast.LENGTH_LONG).show(); //mettiamo un toast per dire all'utente che c'è stato qualcosa che non è andato a buon fine
         }
 
@@ -338,7 +330,6 @@ public class ManualGeneration extends AppCompatActivity  {
                         res = jsonArray.toString();
                         String[] cnt = gson.fromJson(res, String[].class);
                         if (cnt != null && cnt.length > 0) { //se la lista dei cocktail è diversa da null, quindi se non ci sono stati errori legati all'assegnazione nella riga precedente, e se abbiamo trovato qualcosa all'interno della struttura
-                            Log.w("CA", "" + cnt.length);
                             //fill(cnt);
                         }
                     } catch (JSONException e) {
@@ -353,7 +344,6 @@ public class ManualGeneration extends AppCompatActivity  {
                         Type listType = new TypeToken<List<ProDis>>() {}.getType();
                         List<ProDis> cnt = gson.fromJson(res, listType);
                         if (cnt != null && cnt.size() > 0) {
-                            Log.w("CA", cnt.get(0).getCodCat());
                             fill(cnt);
                         }
                     } catch (JSONException e) {

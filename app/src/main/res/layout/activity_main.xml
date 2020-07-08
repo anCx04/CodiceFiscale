@@ -8,50 +8,10 @@
     android:background="@color/backgroundLayout"
     tools:context=".MainActivity">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
-        android:theme="@style/Theme.MaterialComponents.Light"
-        app:cardBackgroundColor="@android:color/white"
-        app:cardElevation="2dp"
-        app:cardPreventCornerOverlap="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_drink"
-                android:layout_width="match_parent"
-                android:layout_height="108dp"
-                android:background="#FFFFFF"
-                android:scaleType="centerCrop" />
-
-            <TextView
-                    android:id="@+id/tv_nome"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title"
-                    android:textAppearance="?attr/textAppearanceHeadline6" />
-
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
 
-        android:layout_marginTop="4dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -59,8 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -83,8 +42,8 @@
         fab:menu_animationDelayPerItem="55"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"
-        fab:menu_colorNormal="#da3c2f"
-        fab:menu_colorPressed="#dc4b3f"
+        fab:menu_colorNormal="@color/colorAccent"
+        fab:menu_colorPressed="@color/colorAccentDark"
         fab:menu_colorRipple="#99d4d4d4"
         fab:menu_fab_label="@string/newFC"
         fab:menu_fab_size="normal"
@@ -117,7 +76,10 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_floating_menu"
             fab:fab_label="@string/manual"
-            fab:fab_size="mini" />
+            fab:fab_size="mini"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorPressed="@color/colorAccentDark"
+            fab:fab_colorRipple="#99d4d4d4"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/material_design_floating_action_menu_item2"
@@ -125,7 +87,10 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_floating_menu"
             fab:fab_label="@string/barcode"
-            fab:fab_size="mini" />
+            fab:fab_size="mini"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorPressed="@color/colorAccentDark"
+            fab:fab_colorRipple="#99d4d4d4"/>
 
     </com.github.clans.fab.FloatingActionMenu>
 

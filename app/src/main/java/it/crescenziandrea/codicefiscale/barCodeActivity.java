@@ -17,11 +17,14 @@ import android.widget.Toast;
 
 import it.crescenziandrea.codicefiscale.database.FiscalCode;
 
-public class barCodeActivity extends AppCompatActivity {
+public class barCodeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final int deleteCode = 99;
     ImageView iv_barCode;
     TextView tv_fcode;
+    FloatingActionButton fab;
+    FiscalCode fiscalCode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +34,7 @@ public class barCodeActivity extends AppCompatActivity {
         tv_fcode = findViewById(R.id.tv_fcode);
 
         Intent data = getIntent();
-        FiscalCode fiscalCode = (FiscalCode) data.getSerializableExtra("fiscalCode");
-        Toast.makeText(getApplicationContext(), fiscalCode.getfCode(), Toast.LENGTH_LONG).show();
+        fiscalCode = (FiscalCode) data.getSerializableExtra("fiscalCode");
 
         BarCodeGenerator barCodeGenerator = new BarCodeGenerator(fiscalCode.getfCode());
         tv_fcode.setText(fiscalCode.getfCode());
@@ -44,15 +46,19 @@ public class barCodeActivity extends AppCompatActivity {
         }
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent output = new Intent();
-                output.putExtra("fCode",fiscalCode);
-                setResult(deleteCode, output);
-                finish();
-            }
-        });
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if(v.getId() == fab.getId()){
+            Intent output = new Intent();
+            output.putExtra("fCode",fiscalCode);
+            setResult(deleteCode, output);
+            finish();
+        }
+
     }
 }

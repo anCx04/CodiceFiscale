@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_drink"
+            android:id="@+id/iv_fcode"
             android:layout_width="match_parent"
             android:layout_height="108dp"
             android:background="?attr/colorPrimaryDark"
