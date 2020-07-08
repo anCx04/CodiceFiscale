@@ -115,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
                     IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
                     if (result != null) {
                         if (result.getContents() == null) {
-                            Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.cancelled), Toast.LENGTH_LONG).show();
                         } else {
-                            FiscalCode fcDatabase = new FiscalCode(result.getContents(),"autosave");
+                            FiscalCode fcDatabase = new FiscalCode(result.getContents(),getResources().getString(R.string.autosaved));
                             db.roomDAO().addData(fcDatabase);
                         }
                     } else {

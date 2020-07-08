@@ -15,4 +15,6 @@
     <string name="generate">Generate</string>
     <string name="error">Something went wrong…</string>
     <string name="complete">Complete all the fields!</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="autosaved">Autosaved</string>
 </resources>
