@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     Holder holder;
     private final int keyReqManualGen = 10;
     private final int keyReqAutGen = 49374;
+    private final int viewRecCode = 99;
 
 
     @Override
@@ -48,14 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
         createDB();
 
-        FiscalCode fCode1 = new FiscalCode( "josef","josef");
-
-        db.roomDAO().addData(fCode1);
-
-
 
         holder = new Holder();
-
+        /*
         holder.provaTXT.setText(holder.prova.Calculate());
         try {
             holder.provaVIEW.setImageBitmap(holder.prova2.generateBarCode());
@@ -63,6 +59,15 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+         */
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        holder.genRecycleView();
 
     }
 
@@ -77,15 +82,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    class Holder implements FloatingActionButton.OnClickListener {
+    class Holder implements  View.OnClickListener {
 
         final RecyclerView rvCocktails;
         final FloatingActionMenu materialDesignFAM;
         final FloatingActionButton floatingActionButton1;
         final FloatingActionButton floatingActionButton2;
         final TextView provaTXT;
-        final CFgenerator prova;
-        final BarCodeGenerator prova2;
         final ImageView provaVIEW;
 
         Holder() {
@@ -97,45 +100,29 @@ public class MainActivity extends AppCompatActivity {
             provaTXT = findViewById(R.id.tv_nome);
             provaVIEW = findViewById(R.id.iv_drink);
 
-            prova = new CFgenerator("BASIRICO", "JOSEF", 25,
-                    2, 1998, "M", "rm");
 
-            prova2 = new BarCodeGenerator(prova.Calculate());
 
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2, GridLayoutManager.VERTICAL, false);
-            rvCocktails.setLayoutManager(layoutManager);
-            fCodeAdapter mAdapter = new fCodeAdapter(db.roomDAO().getMyData());
-            rvCocktails.setAdapter(mAdapter);
+            //prova2 = new BarCodeGenerator(prova.Calculate());
+
+            genRecycleView();
 
             int largePadding = getResources().getDimensionPixelSize(R.dimen.shr_product_grid_spacing);
             int smallPadding = getResources().getDimensionPixelSize(R.dimen.shr_product_grid_spacing_small);
             rvCocktails.addItemDecoration(new ProductGridItemDecoration(largePadding, smallPadding));
 
 
-            floatingActionButton1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, ManualGeneration.class);
-                    MainActivity.this.startActivity(intent);
-                }
-            });
-            floatingActionButton2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
-                    integrator.initiateScan();
-
-                    new IntentIntegrator(MainActivity.this).initiateScan();
-
-
-                }
-            });
             floatingActionButton1.setOnClickListener(this);
             floatingActionButton2.setOnClickListener(this);
 
 
         }
 
+        public void genRecycleView(){
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2, GridLayoutManager.VERTICAL, false);
+            rvCocktails.setLayoutManager(layoutManager);
+            fCodeAdapter mAdapter = new fCodeAdapter(db.roomDAO().getMyData());
+            rvCocktails.setAdapter(mAdapter);
+        }
 
         public  void activityResult(int requestCode, int resultCode, Intent data) {
 
@@ -164,6 +151,16 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         // to do
                     }
+                    break;
+                case viewRecCode:
+                    if(resultCode == viewRecCode){
+                        FiscalCode fiscalCode = (FiscalCode) data.getSerializableExtra("fCode");
+                        db.roomDAO().delete(fiscalCode);
+                    }
+
+                default:
+                    // TO DO
+                    break;
             }
 
         }
@@ -203,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private class fCodeAdapter extends RecyclerView.Adapter<fCodeAdapter.Holder> {
+    private class fCodeAdapter extends RecyclerView.Adapter<fCodeAdapter.Holder> implements View.OnClickListener {
 
         private final List<FiscalCode> fCodes;
 
@@ -216,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
         public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
             View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cards_layout, parent, false);
+            layoutView.setOnClickListener(this);
             return new Holder(layoutView);
         }
 
@@ -229,6 +227,19 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getItemCount() {
             return fCodes.size();
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            int position = ((RecyclerView) v.getParent()).getChildAdapterPosition(v);
+            FiscalCode fiscalCode = fCodes.get(position);
+            Toast.makeText(getApplicationContext(), fiscalCode.getAlias(), Toast.LENGTH_LONG).show();
+
+            Intent intent = new Intent(MainActivity.this, barCodeActivity.class);
+            intent.putExtra("fiscalCode",fiscalCode);
+            MainActivity.this.startActivityForResult(intent,viewRecCode);
+
         }
 
         class Holder extends RecyclerView.ViewHolder{

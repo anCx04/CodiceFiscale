@@ -70,7 +70,8 @@ public class CFgenerator {
         String NameCode = this.ConsonantCalculatorName(this.name);
         String BirthSex = this.BirthSexYearCalculator(this.year, this.month, this.day,this.sex);
 
-        String result = SurnameCode + NameCode + BirthSex + "H501"; //TODO: aggiungere codice comunale
+        String birthplace = this.birthplace;
+        String result = SurnameCode + NameCode + BirthSex + birthplace; //TODO: aggiungere codice comunale
 
         String ControlCharacter = this.ControlCharacterCalculator(result);
         result += ControlCharacter;

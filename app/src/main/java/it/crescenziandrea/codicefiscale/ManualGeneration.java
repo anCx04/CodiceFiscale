@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -31,11 +34,20 @@ import java.lang.reflect.Type;
 import java.util.Calendar;
 import java.util.List;
 
-public class ManualGeneration extends AppCompatActivity implements Dialog.DialogListener {
+public class ManualGeneration extends AppCompatActivity  {
+
+    /*
     @Override
-    public void applyEntry(String Cfcode, String alias, Bitmap barcode) {
+    public void applyEntry(String Cfcode, String alias) {
          //TODO: passare i valori al DOA li posso prendere da CFcode e alias
+        holder.alias = alias;
     }
+
+    @Override
+    public String setCFcode() {
+        return holder.cfcode.Calculate();
+    }
+     */
 
     Holder holder;
 
@@ -50,11 +62,19 @@ public class ManualGeneration extends AppCompatActivity implements Dialog.Dialog
     }
 
 
-    class Holder implements DatePickerDialog.OnDateSetListener,Button.OnClickListener {
+    class Holder implements DatePickerDialog.OnDateSetListener,View.OnClickListener {
+
+        TextInputEditText tvSurname;
+        TextInputEditText tvName;
         AutoCompleteTextView tvRegion;
         AutoCompleteTextView tvProvince;
         AutoCompleteTextView tvDistrict;
         AutoCompleteTextView tvGender;
+        ArrayAdapter<String> adapter;
+        List<ProDis> prov ;
+        CFgenerator cfcode;
+        String[] str;
+        TextInputEditText alias;
         Button btn;
         Button bt_gen;
         final VolleyCocktail model;
@@ -62,42 +82,51 @@ public class ManualGeneration extends AppCompatActivity implements Dialog.Dialog
         int day;
         int month;
         int year;
+        int bDay;
+        int bMonth;
+        int bYear;
         private int search = 0;
 
 
 
-        String[] region = new String[]{"Veneto",
-                "Lombardia",
-                "Toscana",
-                "Sardegna",
-                "Abruzzo",
-                "Basilicata",
-                "Sicilia",
-                "Puglia",
-                "Piemonte",
-                "Lazio",
-                "Campania",
-                "Calabria",
-                "Marche",
-                "Umbria",
-                "Molise",
-                "Emilia Romagna",
-                "Friuli Venezia Giulia",
-                "Liguria",
-                "Trentino Alto Adige",
-                "Valle d'Aosta"};
+        String[] region = new String[]{"veneto",
+                "lombardia",
+                "toscana",
+                "sardegna",
+                "abruzzo",
+                "basilicata",
+                "sicilia",
+                "puglia",
+                "piemonte",
+                "lazio",
+                "campania",
+                "calabria",
+                "marche",
+                "umbria",
+                "molise",
+                "emilia Romagna",
+                "friuli venezia giulia",
+                "liguria",
+                "trentino alto adige",
+                "valle d'aosta"};
 
         String[] gender = new String[]{"M","F"};
 
 
         @SuppressLint("ClickableViewAccessibility")
         public Holder() {
+            tvSurname = findViewById(R.id.surname);
+            tvName = findViewById(R.id.name);
             tvRegion = findViewById(R.id.tvRegion);
             tvProvince = findViewById(R.id.tvProvince);
             tvDistrict = findViewById(R.id.tvDistrict);
             tvGender = findViewById(R.id.tvGender);
             bt_gen = findViewById(R.id.bt_gen);
+            alias = findViewById(R.id.alias);
             bt_gen.setOnClickListener(this);
+
+            tvProvince.setEnabled(false);
+            tvDistrict.setEnabled(true);
 
             calendar = Calendar.getInstance();
             day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -106,21 +135,36 @@ public class ManualGeneration extends AppCompatActivity implements Dialog.Dialog
 
             btn = findViewById(R.id.calendar);
 
-            btn.setOnClickListener(new View.OnClickListener() {
-                                       @Override
-                                       public void onClick(View v) {
-                                           DatePickerDialog dialog = DatePickerDialog.newInstance(holder,day,month,year);
-                                           dialog.show(getSupportFragmentManager(),"DatePickerDialog");
+            btn.setOnClickListener(this);
 
-                                       }
-                                   });
+            tvRegion.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    if (tvRegion.isPerformingCompletion()) {
+                        tvProvince.setEnabled(true);
+                        tvDistrict.setEnabled(true);
+                    }
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
             tvProvince.setOnTouchListener(new View.OnTouchListener(){
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                        model.searchProvince(tvRegion.getText().toString());
-                        Toast.makeText(getApplicationContext(), "Provincie", Toast.LENGTH_LONG).show();
-                        search = 2;
+
+                    model.searchProvince(tvRegion.getText().toString());
+                    search = 2;
+                    Toast.makeText(getApplicationContext(), tvRegion.getText().toString(), Toast.LENGTH_LONG).show();
+
                     return false;
                 }
             });
@@ -145,33 +189,39 @@ public class ManualGeneration extends AppCompatActivity implements Dialog.Dialog
             ArrayAdapter<String> adapterGender = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, gender);
             tvGender.setAdapter(adapterGender);
 
+
+
             this.model = new VolleyCocktail() {                                                 //inizializziamo il modello di acquisizione dati che è un new VolleyCocktail
                 @Override
                 void fill(List<ProDis> cnt) {
                     Log.w("CA", "fill");
                     Toast.makeText(getApplicationContext(), "fill", Toast.LENGTH_LONG).show();
-                    fillList(listToArrayString(cnt)); //il metodo fill chiama una funzione chiamata fillList
+                    fillList(cnt); //il metodo fill chiama una funzione chiamata fillList
                 }
             };
         }
 
         @Override
         public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-           //String date = "You picked the following date: "+dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
+           bDay = dayOfMonth;
+           bMonth = (monthOfYear+1);
+           bYear = year;
             return ;
         }
 
-        private void fillList(String[] cnt) { //fa il filling della RecyclerView
-            ArrayAdapter<String> adapter;
+        private void fillList(List<ProDis> cnt) { //fa il filling della RecyclerView
+
 
             switch(search){
                 case 2:
-                    adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, cnt);
+                    adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, listToArrayString(cnt));
                     tvProvince.setAdapter(adapter);
                     break;
 
                 case 3:
-                    adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, cnt);
+                    prov = cnt;
+                    str = listToArrayString(cnt);
+                    adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1,str);
                     tvDistrict.setAdapter(adapter);
                     break;
 
@@ -181,6 +231,13 @@ public class ManualGeneration extends AppCompatActivity implements Dialog.Dialog
             }
 
 
+        }
+
+        public  int getIndexOf(String[] strings, String item) {
+            for (int i = 0; i < strings.length; i++) {
+                if (item.equals(strings[i])) return i;
+            }
+            return -1;
         }
 
         private String[] listToArrayString(List<ProDis> list){
@@ -197,12 +254,29 @@ public class ManualGeneration extends AppCompatActivity implements Dialog.Dialog
         @Override
         public void onClick(View v) {
             if(v.getId() == bt_gen.getId()){
-                openDialog();
+
+
+
+                cfcode = new CFgenerator(tvSurname.getText().toString().toUpperCase(),
+                        tvName.getText().toString().toUpperCase(),
+                        bDay,
+                        bMonth,
+                        bYear,
+                        tvGender.getText().toString().toUpperCase(),
+                        prov.get(getIndexOf(str,tvDistrict.getText().toString())).getCodCat());
+
+                //openDialog();
+
                 Intent output = new Intent();
-                output.putExtra("alias", "io");
-                output.putExtra("fCode", "CRSNDR98H11H501H");
+                output.putExtra("alias", alias.getText().toString());
+                output.putExtra("fCode", cfcode.Calculate());
                 setResult(RESULT_OK, output);
-                //finish();
+                finish();
+            }
+
+            if(v.getId() == btn.getId()){
+                DatePickerDialog dialog = DatePickerDialog.newInstance(holder,day,month,year);
+                dialog.show(getSupportFragmentManager(),"DatePickerDialog");
             }
         }
     }
@@ -248,6 +322,7 @@ public class ManualGeneration extends AppCompatActivity implements Dialog.Dialog
 
         @Override
         public void onErrorResponse(VolleyError error) {
+            Log.w("CA","error"+error.toString());
             Toast.makeText(getApplicationContext(), "SOMETHING WENT WRONG", Toast.LENGTH_LONG).show(); //mettiamo un toast per dire all'utente che c'è stato qualcosa che non è andato a buon fine
         }
 

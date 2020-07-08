@@ -22,6 +22,17 @@ public class ProDis implements Parcelable {
         codCat = in.readString();
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(proDis);
+        dest.writeString(codCat);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
     public static final Creator<ProDis> CREATOR = new Creator<ProDis>() {
         @Override
         public ProDis createFromParcel(Parcel in) {
@@ -33,17 +44,6 @@ public class ProDis implements Parcelable {
             return new ProDis[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(proDis);
-        dest.writeString(codCat);
-    }
 
     public String getProDis() {
         return proDis;

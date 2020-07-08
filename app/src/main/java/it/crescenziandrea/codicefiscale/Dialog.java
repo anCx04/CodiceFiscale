@@ -30,6 +30,12 @@ public class Dialog extends AppCompatDialogFragment{
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_dialog, null);
 
+        CFcode = view.findViewById(R.id.CFresult);
+        CFcode.setText(listener.setCFcode());
+
+        alias = view.findViewById(R.id.alias);
+        barCode = view.findViewById(R.id.ivBarCode);
+
         builder.setView(view).setTitle("preview").setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -40,15 +46,11 @@ public class Dialog extends AppCompatDialogFragment{
             public void onClick(DialogInterface dialog, int which) {
                 String CFcodeResult = CFcode.getText().toString();
                 String givenAlias = alias.getText().toString();
-                Bitmap barCodePreview = ((BitmapDrawable)barCode.getDrawable()).getBitmap();
-
-                listener.applyEntry(CFcodeResult, givenAlias, barCodePreview);
+                listener.applyEntry(CFcodeResult, givenAlias);
             }
         });
 
-        CFcode = view.findViewById(R.id.CFresult);
-        alias = view.findViewById(R.id.alias);
-        barCode = view.findViewById(R.id.ivBarCode);
+
 
         return builder.create();
     }
@@ -66,6 +68,7 @@ public class Dialog extends AppCompatDialogFragment{
     }
 
     public interface DialogListener {
-        void applyEntry(String Cfcode, String alias, Bitmap barCode);
+        void applyEntry(String Cfcode, String alias);
+        String setCFcode();
     }
 }

@@ -8,8 +8,10 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "FC_table")
-public class FiscalCode {
+public class FiscalCode implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     protected int id;

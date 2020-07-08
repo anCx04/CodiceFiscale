@@ -19,7 +19,7 @@ public class BarCodeGenerator {
         this.fiscalCodeToConvert = fiscalCodeToConvert;
     }
     public Bitmap generateBarCode() throws WriterException {
-        bitmap = encodeAsBitmap(this.fiscalCodeToConvert, BarcodeFormat.CODE_39, 600, 300);
+        bitmap = encodeAsBitmap(this.fiscalCodeToConvert, BarcodeFormat.CODE_39, 1200, 600);
         return  bitmap;
     }
 
