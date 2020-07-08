@@ -13,6 +13,6 @@
     <string name="barcode" translatable="false">BarCode Scanner</string>
     <string name="newFC">Add new</string>
     <string name="generate">Generate</string>
-    <string name="error">Something went wrong...</string>
+    <string name="error">Something went wrong…</string>
     <string name="complete">Complete all the fields!</string>
 </resources>

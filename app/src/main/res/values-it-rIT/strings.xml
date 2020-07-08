@@ -12,6 +12,6 @@
     <string name="manual">Generazione manuale</string>
     <string name="newFC">Aggiungi nuovo</string>
     <string name="generate">Genera</string>
-    <string name="error">Qualcosa è andato storto...</string>
+    <string name="error">Qualcosa è andato storto…</string>
     <string name="complete">Completa tutti i campi!</string>
 </resources>
