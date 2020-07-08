@@ -103,8 +103,6 @@ public class MainActivity extends AppCompatActivity {
             floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
             floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
 
-
-
             genRecycleView();
 
             int largePadding = getResources().getDimensionPixelSize(R.dimen.shr_product_grid_spacing);
