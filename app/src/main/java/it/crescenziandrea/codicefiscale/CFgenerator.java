@@ -64,28 +64,27 @@ public class CFgenerator {
         this.sex = sex;
     }
 
-
+    //Public method to start the calculation e get the result
     public  String Calculate() {
         String SurnameCode = this.ConsonantCalculatorSurname(this.surname);
         String NameCode = this.ConsonantCalculatorName(this.name);
         String BirthSex = this.BirthSexYearCalculator(this.year, this.month, this.day,this.sex);
 
         String birthplace = this.birthplace;
-        String result = SurnameCode + NameCode + BirthSex + birthplace; //TODO: aggiungere codice comunale
+        String result = SurnameCode + NameCode + BirthSex + birthplace; //first result that will be sended to the control character calculator
 
-        String ControlCharacter = this.ControlCharacterCalculator(result);
-        result += ControlCharacter;
+        String ControlCharacter = this.ControlCharacterCalculator(result);  //calculate the control character
+        result += ControlCharacter; //final result
 
         return result;
     }
 
-    //TODO: definire metodi per calcolare codici relativi alle regioni
-
+    // Method to calculate the consonant of the given name according to the standard algorithm
     private String ConsonantCalculatorName(String string) {
         int i;
         String consonant = new String();
         String result = new String();
-        for(i=0; i<=string.length()-1; i++) {
+        for(i=0; i<=string.length()-1; i++) { //making new string full of consonant
             char character = string.charAt(i);
             if (character != 'a' && character != 'e' && character != 'i' && character != 'o' && character != 'u' &&
                     character != 'A' && character != 'E' && character != 'I' && character != 'O' && character != 'U') {
@@ -93,19 +92,20 @@ public class CFgenerator {
             }
         }
 
+        //checking if there's more of 3 consonant in the consonant's string
             if(consonant.length() > 3) {
                 for(i=0; i < consonant.length();i++){
                     char cons = consonant.charAt(i);
-                    if(i != 1) {
+                    if(i != 1) { //if is true will be inserted in the result the first, third and fourth consonant
                         result += Character.toString(cons);
                     }
                     if(result.length() < 3) continue;
                     else break;
                 }
             }
-            else result = consonant;
+            else result = consonant; //if there's exactly 3 consonant in the consonant's string will be directly returned
 
-            if(consonant.length() < 3) {
+            if(consonant.length() < 3) { //if there's not enough consonant will be added the first vocal in the given string
                 for (i = 0; i <= string.length() - 1; i++) {
                     char character = string.charAt(i);
                     if (character == 'a' || character == 'e' || character == 'i' || character == 'o' || character == 'u' &&
@@ -114,7 +114,7 @@ public class CFgenerator {
                         if(consonant.length() == 3) break;
                     }
                 }
-                if(consonant.length() < 3) consonant += "X";
+                if(consonant.length() < 3) consonant += "X"; //if i haven't enough consonant or vocals will be added a X
                 result = consonant;
             }
         return result;
@@ -122,7 +122,7 @@ public class CFgenerator {
 
 
 
-    private String ConsonantCalculatorSurname(String string) {
+    private String ConsonantCalculatorSurname(String string) { //same as ConsonantCalculatorName
         int i;
         String consonant = new String();
         String result = new String();
@@ -160,6 +160,7 @@ public class CFgenerator {
         return result;
     }
 
+    //this method return the birth, sex and year code calculated using specific method
     private String BirthSexYearCalculator(int year, int month, int day, String sex){
         String BirthSexYearCode;
         String YearCode;
@@ -177,9 +178,9 @@ public class CFgenerator {
 
     private String YearCalculator(int year) {
         return Integer.toString(year).substring(2);
-    }
+    } //return the 2 last number of the year given
 
-    private String MonthCalculator(int month) {
+    private String MonthCalculator(int month) { //mapping of month and letter
         String result;
         switch (month) {
             case 1:
@@ -225,10 +226,10 @@ public class CFgenerator {
         return result;
     }
 
-    private String DaySexCalculator(int day, String sex) {
+    private String DaySexCalculator(int day, String sex) { //return de code of the day value
         String dayCode = String.format("%02d", day);
 
-        if(sex.equals("F")) {
+        if(sex.equals("F")) { //case if the user is female
             int fullDayCode;
             fullDayCode = Integer.parseInt(dayCode);
             fullDayCode += 40;
@@ -237,6 +238,7 @@ public class CFgenerator {
         return dayCode;
     }
 
+    //calculation of the control character
     private String ControlCharacterCalculator(String code) {
         // 1 generate separeted string of odd and eqal character
         String eqal = getEqualString(code);
@@ -254,7 +256,7 @@ public class CFgenerator {
     }
 
 
-
+    //generate a string full of characters whit char positive value
     private String getEqualString(String string) {
         String result = "";
         int i;
@@ -266,6 +268,7 @@ public class CFgenerator {
         return result;
     }
 
+    //generate a string full of characters whit char odd value
     private String getOddString(String string) {
         String result = "";
         int i;
