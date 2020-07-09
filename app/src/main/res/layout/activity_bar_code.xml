@@ -41,6 +41,7 @@
         android:textSize="@dimen/textSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_barCode" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_barCode"
+        android:textColor="@android:color/black"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -317,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText userInputDialogEditText = (EditText) mView.findViewById(R.id.userInputDialog);
         alertDialogBuilderUserInput.setCancelable(false);
-        alertDialogBuilderUserInput.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+        alertDialogBuilderUserInput.setPositiveButton(getResources().getString(R.string.savePop), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogBox, int id) {
 
                 //if you press the send button save in the database, regenerate the recycleview and close the popup
@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        alertDialogBuilderUserInput.setNegativeButton("Cancel",
+        alertDialogBuilderUserInput.setNegativeButton(getResources().getString(R.string.cancelPop),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogBox, int id) {
                         // close popup

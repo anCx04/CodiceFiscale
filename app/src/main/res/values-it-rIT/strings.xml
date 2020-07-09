@@ -17,4 +17,6 @@
     <string name="cancelled">Cancellato</string>
     <string name="autosaved">Salvato automaticamente</string>
     <string name="birth">Luogo di nascita:</string>
+    <string name="savePop">Salva</string>
+    <string name="cancelPop">Annulk</string>
 </resources>

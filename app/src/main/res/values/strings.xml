@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Fiscal Code</string>
     <string name="province">Select a province</string>
-    <string name="district">Select a district</string>
+    <string name="district">"Select a town "</string>
     <string name="region">Select a region</string>
     <string name="surname">Surname</string>
     <string name="name">First name</string>
@@ -18,4 +18,6 @@
     <string name="cancelled">Cancelled</string>
     <string name="autosaved">Autosaved</string>
     <string name="birth">Birthplace:</string>
+    <string name="savePop">Save</string>
+    <string name="cancelPop">Cancel</string>
 </resources>
