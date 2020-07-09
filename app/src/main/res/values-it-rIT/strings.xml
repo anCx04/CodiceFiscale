@@ -6,7 +6,6 @@
     <string name="region">Seleziona una regione</string>
     <string name="surname">Cognome</string>
     <string name="name">Nome</string>
-    <string name="date">Data</string>
     <string name="alias">Soprannome</string>
     <string name="title">Titolo</string>
     <string name="manual">Generazione manuale</string>
@@ -18,5 +17,6 @@
     <string name="autosaved">Salvato automaticamente</string>
     <string name="birth">Luogo di nascita:</string>
     <string name="savePop">Salva</string>
-    <string name="cancelPop">Annulk</string>
+    <string name="cancelPop">Annulla</string>
+    <string name="date">Data di nascita</string>
 </resources>
