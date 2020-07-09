@@ -16,4 +16,5 @@
     <string name="complete">Completa tutti i campi!</string>
     <string name="cancelled">Cancellato</string>
     <string name="autosaved">Salvato automaticamente</string>
+    <string name="birth">Luogo di nascita:</string>
 </resources>

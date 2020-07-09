@@ -17,4 +17,5 @@
     <string name="complete">Complete all the fields!</string>
     <string name="cancelled">Cancelled</string>
     <string name="autosaved">Autosaved</string>
+    <string name="birth">Birthplace:</string>
 </resources>
