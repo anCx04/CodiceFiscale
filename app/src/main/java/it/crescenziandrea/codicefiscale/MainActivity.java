@@ -56,28 +56,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //updates the RecycleView
         holder.genRecycleView();
 
     }
 
     @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) { //vado a scrivere nel Bundle che mi viene passato che sarà poi passato nuovamente all'app per salvarne lo stato
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+
+        // save the values ​​when I call the popup and the screen is turned if there is no popup I don't need show = 1 there is, 0 otherwise
         if(show == 1) {
+            // except fCode is show to find out if I was in this state
             outState.putInt(saveStateShow,show);
-            outState.putString(saveFcodeKey, holder.str.toString()); //aggiungiamo al Bundle coppie chiave/valore
-            alertDialogAndroid.dismiss();
+            outState.putString(saveFcodeKey, holder.str);
+            alertDialogAndroid.dismiss();                   // I reset the alertdialogandroid
         }
         super.onSaveInstanceState(outState);
     }
 
-    protected void onRestoreInstanceState(Bundle savedInstanceState) { //gli passiamo lo stesso bundle che avevamo avuto in input nella onSaveInstanceState per fare il restoring dello stato
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
 
+        // if show == 1 I regenerate the popup
         if(savedInstanceState.getInt(saveStateShow) == 1) {
             showPopUp(savedInstanceState.getString(saveFcodeKey));
         }
         super.onRestoreInstanceState(savedInstanceState);
     }
 
+    // I create the database
     private void createDB() {
         db = Room.databaseBuilder(getApplicationContext(),
                 appFiscalCodeDatabase.class,
@@ -89,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     class Holder implements  View.OnClickListener {
 
-        final RecyclerView rvCocktails;
+        final RecyclerView rvFcode;
         final FloatingActionMenu materialDesignFAM;
         final FloatingActionButton floatingActionButton1;
         final FloatingActionButton floatingActionButton2;
@@ -98,33 +104,40 @@ public class MainActivity extends AppCompatActivity {
 
         Holder() {
 
-            rvCocktails = findViewById(R.id.recycler_view);
-            materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
-            floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
-            floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
 
-            genRecycleView();
+            // I link the objects to the xml objects
+            rvFcode = findViewById(R.id.recycler_view);
+            materialDesignFAM =  findViewById(R.id.material_design_android_floating_action_menu);
+            floatingActionButton1 =  findViewById(R.id.material_design_floating_action_menu_item1);
+            floatingActionButton2 =  findViewById(R.id.material_design_floating_action_menu_item2);
 
+            genRecycleView();           // function that generates the recyclerView
+
+            //  I fix the cardview padding
             int largePadding = getResources().getDimensionPixelSize(R.dimen.shr_product_grid_spacing);
             int smallPadding = getResources().getDimensionPixelSize(R.dimen.shr_product_grid_spacing_small);
-            rvCocktails.addItemDecoration(new ProductGridItemDecoration(largePadding, smallPadding));
+            rvFcode.addItemDecoration(new ProductGridItemDecoration(largePadding, smallPadding));
 
 
+            //set onclicklistners
             floatingActionButton1.setOnClickListener(this);
             floatingActionButton2.setOnClickListener(this);
 
 
         }
 
+        //  function that generates the RecycleView
         public void genRecycleView(){
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2, GridLayoutManager.VERTICAL, false);
-            rvCocktails.setLayoutManager(layoutManager);
+            rvFcode.setLayoutManager(layoutManager);
             fCodeAdapter mAdapter = new fCodeAdapter(db.roomDAO().getMyData());
-            rvCocktails.setAdapter(mAdapter);
+            rvFcode.setAdapter(mAdapter);
         }
 
+        //  function that manages the response of the activities called
         public  void activityResult(int requestCode, int resultCode, Intent data) {
 
+            //save and delate the data in the database from different activities
             switch(requestCode){
                 case keyReqManualGen:
 
@@ -168,8 +181,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
+            // calls the different activities according to the button that is pressed
             if(v.getId() == floatingActionButton1.getId()){
 
+                //closes the menu that has been pressed
                 materialDesignFAM.close(true);
 
                 Intent intent = new Intent(MainActivity.this, ManualGeneration.class);
@@ -179,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(v.getId() == floatingActionButton2.getId()){
 
+                //closes the menu that has been pressed
                 materialDesignFAM.close(true);
 
                 IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
@@ -198,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        holder.activityResult(requestCode, resultCode, data);
+        holder.activityResult(requestCode, resultCode, data);           // function in holder class
 
     }
 
@@ -225,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull Holder holder, int position) {
 
+            //populate card views with data
             holder.tv_name.setText(fCodes.get(position).getAlias());
             holder.tv_fCode.setText(fCodes.get(position).getfCode());
 
@@ -238,15 +255,20 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
+            //calls an activity that generates the barcode according to the cardview pressed
+
+            //save the position and then the fiscalcode in position i according to what has been pressed
             int position = ((RecyclerView) v.getParent()).getChildAdapterPosition(v);
             FiscalCode fiscalCode = fCodes.get(position);
 
+            //call barCodeActivity  passing the fiscalcode
             Intent intent = new Intent(MainActivity.this, barCodeActivity.class);
             intent.putExtra("fiscalCode",fiscalCode);
             MainActivity.this.startActivityForResult(intent,viewRecCode);
 
         }
 
+        //cardview holder
         class Holder extends RecyclerView.ViewHolder{
 
             final TextView tv_name;
@@ -265,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //function padding cardview
     public class ProductGridItemDecoration extends RecyclerView.ItemDecoration {
         private int largePadding;
         private int smallPadding;
@@ -275,8 +298,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void getItemOffsets(Rect outRect, View view,
-                                   RecyclerView parent, RecyclerView.State state) {
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             outRect.left = smallPadding;
             outRect.right = smallPadding;
             outRect.top = largePadding;
@@ -285,6 +307,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //function popup
     public void showPopUp(String result){
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(MainActivity.this);
@@ -297,6 +320,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialogBuilderUserInput.setPositiveButton("Send", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogBox, int id) {
 
+                //if you press the send button save in the database, regenerate the recycleview and close the popup
                 FiscalCode fcDatabase = new FiscalCode(result,userInputDialogEditText.getText().toString());
                 db.roomDAO().addData(fcDatabase);
 
@@ -309,6 +333,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialogBuilderUserInput.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogBox, int id) {
+                        // close popup
                         dialogBox.cancel();
                     }
                 });

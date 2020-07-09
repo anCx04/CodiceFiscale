@@ -120,7 +120,7 @@ public class CFgenerator {
         return result;
     }
 
-    //nobilio
+
 
     private String ConsonantCalculatorSurname(String string) {
         int i;

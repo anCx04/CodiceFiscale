@@ -7,6 +7,7 @@ import androidx.room.Entity;
 
 import com.google.gson.annotations.SerializedName;
 
+//items from api responses
 @Entity
 public class ProDis implements Parcelable {
 

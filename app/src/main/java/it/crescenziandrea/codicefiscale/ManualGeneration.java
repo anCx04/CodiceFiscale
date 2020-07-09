@@ -1,6 +1,7 @@
 package it.crescenziandrea.codicefiscale;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -53,21 +54,24 @@ public class ManualGeneration extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_generation);
+
         holder = new Holder();
-
-
 
     }
 
     @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) { //vado a scrivere nel Bundle che mi viene passato che sarà poi passato nuovamente all'app per salvarne lo stato
-        outState.putInt(bDayKey, holder.bDay); //aggiungiamo al Bundle coppie chiave/valore
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+
+        //save the date values
+        outState.putInt(bDayKey, holder.bDay);
         outState.putInt(bMounthKey, holder.bMonth);
         outState.putInt(bYearKey, holder.bYear);
         super.onSaveInstanceState(outState);
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState) { //gli passiamo lo stesso bundle che avevamo avuto in input nella onSaveInstanceState per fare il restoring dello stato
+
+        //restore the date values
         holder.bDay = savedInstanceState.getInt(bDayKey);
         holder.bMonth = savedInstanceState.getInt(bMounthKey);
         holder.bYear = savedInstanceState.getInt(bYearKey);
@@ -129,6 +133,8 @@ public class ManualGeneration extends AppCompatActivity  {
 
         @SuppressLint("ClickableViewAccessibility")
         public Holder() {
+
+            // I link the objects to the xml objects
             tvSurname = findViewById(R.id.surname);
             tvName = findViewById(R.id.name);
             tvRegion = findViewById(R.id.tvRegion);
@@ -139,15 +145,18 @@ public class ManualGeneration extends AppCompatActivity  {
             alias = findViewById(R.id.alias);
             btn = findViewById(R.id.calendar);
 
+            //set onclicklistners
             btn.setOnClickListener(this);
             bt_gen.setOnClickListener(this);
             tvProvince.setOnTouchListener(this);
             tvDistrict.setOnTouchListener(this);
 
 
+            //AutoComplitTextView disability
             tvProvince.setEnabled(false);
             tvDistrict.setEnabled(false);
 
+            //set calendar
             calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
             day = calendar.get(Calendar.DAY_OF_MONTH);
             month = calendar.get(Calendar.MONTH);
@@ -155,9 +164,7 @@ public class ManualGeneration extends AppCompatActivity  {
             calendar.set(day,month,year);
 
 
-
-
-
+            //enable tvProvince only after pressing the previous tvRegion
             tvRegion.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -178,6 +185,7 @@ public class ManualGeneration extends AppCompatActivity  {
                 }
             });
 
+            //enable tvDistrict only after pressing the previous tvProvince
             tvProvince.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -195,19 +203,17 @@ public class ManualGeneration extends AppCompatActivity  {
                 }
             });
 
-
-
-
-
-
+            //set adapter tvRegion
             ArrayAdapter<String> adapterRegion = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, region);
             tvRegion.setAdapter(adapterRegion);
 
+            //set adapter gender
             ArrayAdapter<String> adapterGender = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, gender);
             tvGender.setAdapter(adapterGender);
 
 
 
+            //implement abstract method volley
             this.model = new VolleyApi() {
                 @Override
                 void fill(List<ProDis> cnt) {
@@ -218,19 +224,21 @@ public class ManualGeneration extends AppCompatActivity  {
 
         @Override
         public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+           //save the date in the variables in the holder
+
            bDay = dayOfMonth;
            bMonth = (monthOfYear+1);
            bYear = year;
 
            str2 = bDay +"/"+ bMonth +"/"+bYear;
-
            btn.setText(str2);
-            return ;
+
+           return ;
         }
 
         private void fillList(List<ProDis> cnt) {
-            //fa il filling della RecyclerView
 
+            //it fills the RecyclerView according to the pressed autocompletetextview
 
             switch(search){
                 case 2:
@@ -275,11 +283,14 @@ public class ManualGeneration extends AppCompatActivity  {
         public void onClick(View v) {
             if(v.getId() == bt_gen.getId()){
 
+                //check if all fields have been entered
                 if(tvSurname.getText().toString().isEmpty() || tvName.getText().toString().isEmpty() || tvGender.getText().toString().isEmpty() || tvRegion.getText().toString().isEmpty()
                     || tvProvince.getText().toString().isEmpty() || tvDistrict.getText().toString().isEmpty() || bDay == -1 || bMonth == -1 || bYear == -1 || alias.getText().toString().isEmpty() ){
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.complete),Toast.LENGTH_LONG).show();
                 }
                 else {
+
+                    //generate the fiscalcode using the data entered
                     cfcode = new CFgenerator(tvSurname.getText().toString().toUpperCase(),
                             tvName.getText().toString().toUpperCase(),
                             bDay,
@@ -288,7 +299,6 @@ public class ManualGeneration extends AppCompatActivity  {
                             tvGender.getText().toString().toUpperCase(),
                             prov.get(getIndexOf(str, tvDistrict.getText().toString())).getCodCat());
 
-                    //openDialog();
 
                     Intent output = new Intent();
                     output.putExtra("alias", alias.getText().toString());
@@ -298,6 +308,7 @@ public class ManualGeneration extends AppCompatActivity  {
                 }
             }
 
+            //calback for popup calendar
             if(v.getId() == btn.getId()) {
 
                 DatePickerDialog dialog = DatePickerDialog.newInstance(this);
@@ -308,6 +319,8 @@ public class ManualGeneration extends AppCompatActivity  {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+
+            //intercepts the touch of autocomplittextview to search for provinces / municipalities
 
             if(v.getId() == tvProvince.getId()){
                 model.searchProvince(tvRegion.getText().toString());
@@ -324,10 +337,6 @@ public class ManualGeneration extends AppCompatActivity  {
 
     }
 
-    public void openDialog() {
-        Dialog dialog = new Dialog();
-        dialog.show(getSupportFragmentManager(), "Popup");
-    }
 
     abstract class VolleyApi implements Response.ErrorListener, Response.Listener<String> { //attraverso Volley prende i dati del sito cocktaildb, è la classe che fa da interfaccia tra cocktaildb e la nostra app
         abstract void fill(List<ProDis> cnt); //la UI sarà gestita dalla classe chiamante andando a implementare il metodo fill
@@ -389,6 +398,7 @@ public class ManualGeneration extends AppCompatActivity  {
                 case 2:
                 case 3:
                     try {
+                        //le api rispondono con un array con dentro dei jeson object
                         JSONArray jsonArray = new JSONArray(response);
                         res = jsonArray.toString();
                         Type listType = new TypeToken<List<ProDis>>() {}.getType();

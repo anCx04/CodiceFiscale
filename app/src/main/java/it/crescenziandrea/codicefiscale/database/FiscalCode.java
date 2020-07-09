@@ -10,6 +10,7 @@ import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
+
 @Entity(tableName = "FC_table")
 public class FiscalCode implements Serializable {
 

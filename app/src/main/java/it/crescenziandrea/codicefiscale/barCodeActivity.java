@@ -30,29 +30,32 @@ public class barCodeActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_code);
 
+        // I link the objects to the xml objects
         iv_barCode = findViewById(R.id.iv_barCode);
         tv_fcode = findViewById(R.id.tv_fcode);
+        fab = findViewById(R.id.fab);
 
         Intent data = getIntent();
         fiscalCode = (FiscalCode) data.getSerializableExtra("fiscalCode");
 
+        //generate the barr code
         BarCodeGenerator barCodeGenerator = new BarCodeGenerator(fiscalCode.getfCode());
         tv_fcode.setText(fiscalCode.getfCode());
 
         try {
-            iv_barCode.setImageBitmap(barCodeGenerator.generateBarCode());
+            iv_barCode.setImageBitmap(barCodeGenerator.generateBarCode()); //set the bitmap to create the bar code
         } catch (WriterException e) {
             e.printStackTrace();
         }
 
-
-        fab = findViewById(R.id.fab);
+        //set onclicklistners
         fab.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
 
+        //returns the fiscalcode that the main activity will have to cancel
         if(v.getId() == fab.getId()){
             Intent output = new Intent();
             output.putExtra("fCode",fiscalCode);
